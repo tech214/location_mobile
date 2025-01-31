@@ -12,9 +12,6 @@ class AppThemes {
   static const Color greenDark = Color(0xFF0D9723);
   static const Color blueVerified = Color(0xFF0F62DF);
   static const Color yellow = Color(0xFFF9A825);
-  static LinearGradient getGradient(List<Color> colors) {
-    return LinearGradient(begin: Alignment.topLeft, end: Alignment.bottomRight, stops: const [0.1, 0.4, 0.6, 0.95, 1], colors: colors);
-  }
 
 
 
