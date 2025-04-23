@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "571483345015",
+    "firebase_url": "https://apartment-rental-free-p-7i4tzz-default-rtdb.firebaseio.com",
+    "project_id": "apartment-rental-free-p-7i4tzz",
+    "storage_bucket": "apartment-rental-free-p-7i4tzz.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:571483345015:android:3e384e489dc039410ff672",
+        "android_client_info": {
+          "package_name": "com.example.location_mobile"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "571483345015-v55u5dqa6m00qs3kntcifergoou1fton.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBHwGRVCtwL1zvZ9Tqj9RhOY3kfE_WtM-M"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "571483345015-v55u5dqa6m00qs3kntcifergoou1fton.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
