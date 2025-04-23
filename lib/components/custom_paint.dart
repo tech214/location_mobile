@@ -1,50 +1,40 @@
-
 import 'package:flutter/material.dart';
-import 'package:flutter/painting.dart';
 
-class ClipPainter extends CustomClipper<Path>{
+class ClipPainter extends CustomClipper<Path> {
   @override
-
   Path getClip(Size size) {
-    var height = size.height;
-    var width = size.width;
-    var path = new Path();
+    final height = size.height;
+    final width = size.width;
 
-    path.lineTo(0, size.height );
-    path.lineTo(size.width , height);
-    path.lineTo(size.width , 0);
+    Path path = Path();
 
-    /// [Top Left corner]
-    var secondControlPoint =  Offset(0  ,0);
-    var secondEndPoint = Offset(width * .2  , height *.3);
-    path.quadraticBezierTo(secondControlPoint.dx, secondControlPoint.dy, secondEndPoint.dx, secondEndPoint.dy);
+    // Départ en haut à gauche
+    path.moveTo(70, 70);
 
+    // Descente verticale à gauche
+    path.lineTo(70, height - 70);
 
+    // Grande courbe fluide (gauche vers centre)
+    path.quadraticBezierTo(
+      width * 0.2, height + 1,  // contrôle plus bas pour du roundness
+      width * 0.5, height -7,  // point central plus bas aussi
+    );
 
-    /// [Left Middle]
-    var fifthControlPoint =  Offset(width * .3  ,height * .5);
-    var fiftEndPoint = Offset(  width * .23, height *.6);
-    path.quadraticBezierTo(fifthControlPoint.dx, fifthControlPoint.dy, fiftEndPoint.dx, fiftEndPoint.dy);
+    // Grande courbe fluide (centre vers droite)
+    path.quadraticBezierTo(
+      width * 0.8, height,       // contrôle plus haut que le point précédent pour lisser
+      width, height - 60,
+    );
 
+    // Remonter à droite
+    path.lineTo(width, 0);
 
-    /// [Bottom Left corner]
-    var thirdControlPoint =  Offset(0  ,height);
-    var thirdEndPoint = Offset(width , height  );
-    path.quadraticBezierTo(thirdControlPoint.dx, thirdControlPoint.dy, thirdEndPoint.dx, thirdEndPoint.dy);
-
-
-
-    path.lineTo(0, size.height  );
+    // Fermer la forme
     path.close();
 
     return path;
   }
 
   @override
-  bool shouldReclip(CustomClipper<Path> oldClipper) {
-    // TODO: implement shouldReclip
-    return true;
-  }
-
-
+  bool shouldReclip(CustomClipper<Path> oldClipper) => true;
 }
