@@ -8,14 +8,14 @@ import '../../components/utils/data.dart';
 import '../../components/custom_image.dart';
 import '../../components/icon_box.dart';
 
-class SettingPage extends StatefulWidget {
-  const SettingPage({Key? key}) : super(key: key);
+class ProfilePage extends StatefulWidget {
+  const ProfilePage({Key? key}) : super(key: key);
 
   @override
-  _SettingPageState createState() => _SettingPageState();
+  _ProfilePageState createState() => _ProfilePageState();
 }
 
-class _SettingPageState extends State<SettingPage> {
+class _ProfilePageState extends State<ProfilePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -126,7 +126,7 @@ class _SettingPageState extends State<SettingPage> {
             height: 12,
           ),
           Text(
-            "Sangvaleap",
+            "Skjunior",
             style: TextStyle(
               color: AppColor.textColor,
               fontSize: 20,
@@ -137,7 +137,7 @@ class _SettingPageState extends State<SettingPage> {
             height: 5,
           ),
           Text(
-            "+12 345 6789",
+            "+224 610 11 16 27",
             style: TextStyle(
               color: AppColor.labelColor,
               fontSize: 14,

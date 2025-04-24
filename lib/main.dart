@@ -6,6 +6,8 @@ import 'package:location_mobile/screens/home/home_screen.dart';
 import 'package:location_mobile/themes/app_theme.dart';
 import 'package:location_mobile/welcom_screen/omboading_screen.dart';
 
+import 'components/root.dart';
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
@@ -28,7 +30,8 @@ class MyApp extends StatelessWidget {
       darkTheme: AppThemes.darkTheme,
       themeMode: ThemeMode.system,
       // home:  HomePage(),
-      home:  const OnboardingScreen(),
+      // home:  const OnboardingScreen(),
+      home: const RootApp(),
     );
   }
 }

@@ -1,18 +1,14 @@
-import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
-import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
-
-import '../../components/widgets/cityCard.dart';
-import '../../components/city_item.dart';
-import '../../components/custom_image.dart';
-import '../../components/feature_item.dart';
+import '../../components/notification_box.dart';
 import '../../components/recommend_item.dart';
+import '../../components/searchBar.dart';
 import '../../components/theme/color.dart';
 import '../../components/utils/data.dart';
 import '../../themes/app_theme.dart';
-import '../home.dart';
+import '../details/details.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -25,29 +21,25 @@ class _MyHomePageState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+
       body: CustomScrollView(
         slivers: [
-          const SliverAppBar(
+
+          SliverAppBar(
             backgroundColor: AppColor.appBarColor,
             pinned: true,
             snap: true,
             floating: true,
-            title: Text(
-              "Welcome",
-              style: TextStyle(color: Colors.black),
-            ),
-            foregroundColor: Colors.amber,
-            iconTheme: IconThemeData(color: Colors.red), // Couleur de l'icône de retour
+            title: _builAppBar(),
           ),
           SliverToBoxAdapter(
-
             child: _buildBody(),
           ),
         ],
       ),
+
       floatingActionButton: FloatingActionButton(
         onPressed: (){
-          Get.to(() => const HomePage());
         },
         tooltip: 'onTap',
         child: const Icon(Icons.add),
@@ -56,15 +48,44 @@ class _MyHomePageState extends State<HomeScreen> {
   }
 
 
+  Widget _builAppBar() {
+    return Row(
+      children: [
+        Icon(
+          Icons.place_outlined,
+          color: AppColor.labelColor,
+          size: 20,
+        ),
+        const SizedBox(
+          width: 3,
+        ),
+        Text(
+          "Phnom Penh",
+          style: TextStyle(
+            color: AppColor.darker,
+            fontSize: 13,
+          ),
+        ),
+        const Spacer(),
+        NotificationBox(
+          notifiedNumber: 1,
+        )
+      ],
+    );
+  }
   Widget _buildBody() {
     return DefaultTabController(
       length: 5,
       child: Container(
         height: MediaQuery.of(context).size.height,
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start, // Aligner tout à gauche
+          crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
+            Padding(
+              padding: const EdgeInsets.only(left: 20.0, right: 20.0, top: 10),
+              child: const SearchField(),
+            ),
             const Padding(
               padding: EdgeInsets.only(left: 20.0, top: 20),
               child: Text(
@@ -77,51 +98,24 @@ class _MyHomePageState extends State<HomeScreen> {
               ),
             ),
             const SizedBox(height: 10),
+
+            // TABBAR
             TabBar(
               isScrollable: true,
               labelColor: Colors.white,
               unselectedLabelColor: Colors.blue,
               indicator: BoxDecoration(
-                borderRadius: BorderRadius.circular(30), // Coins arrondis pour l'indicateur
-                color: AppThemes.backgroundColorDark, // Couleur de fond de l'indicateur
+                borderRadius: BorderRadius.circular(30),
+                color: AppThemes.backgroundColorDark,
               ),
               tabAlignment: TabAlignment.start,
               tabs: [
+                // Tab All
                 Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 15, ),
+                  height: 35,  // Hauteur réduite pour rendre la Tab plus petite
+                  padding: const EdgeInsets.symmetric(horizontal: 15),
                   decoration: BoxDecoration(
-                    border: Border.all(
-                      color: Colors.grey, // Bordure des onglets non sélectionnés
-                      width: 2,
-                    ),
-                    borderRadius: BorderRadius.circular(50), // Bordure arrondie
-                  ),
-                  child: const Tab(
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min, // Pour éviter l'overflow
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Icon(
-                          Icons.all_inclusive,
-                          size: 20, // Ajustez la taille de l'icône si nécessaire
-                        ),
-                        SizedBox(width: 5), // Espace entre l'icône et le texte
-                        Text(
-                          "All",
-                          style: TextStyle(fontSize: 14), // Ajustez la taille du texte
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-                Container(
-                  height: 50, // Hauteur uniforme
-                  padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                  decoration: BoxDecoration(
-                    border: Border.all(
-                      color: Colors.grey,
-                      width: 2,
-                    ),
+                    border: Border.all(color: Colors.grey, width: 1),
                     borderRadius: BorderRadius.circular(50),
                   ),
                   child: const Tab(
@@ -129,27 +123,19 @@ class _MyHomePageState extends State<HomeScreen> {
                       mainAxisSize: MainAxisSize.min,
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Icon(
-                          Icons.star,
-                          size: 20,
-                        ),
-                        SizedBox(width: 5),
-                        Text(
-                          "Popular",
-                          style: TextStyle(fontSize: 14),
-                        ),
+                        Icon(Icons.all_inclusive, size: 18),  // Icône plus petite
+                        SizedBox(width: 6),  // Espacement plus petit
+                        Text("All", style: TextStyle(fontSize: 12)),  // Texte plus petit
                       ],
                     ),
                   ),
                 ),
+                // Tab Popular
                 Container(
-                  height: 50,
-                  padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                  height: 35,  // Hauteur réduite
+                  padding: const EdgeInsets.symmetric(horizontal: 15),
                   decoration: BoxDecoration(
-                    border: Border.all(
-                      color: Colors.grey,
-                      width: 2,
-                    ),
+                    border: Border.all(color: Colors.grey, width: 1),
                     borderRadius: BorderRadius.circular(50),
                   ),
                   child: const Tab(
@@ -157,27 +143,20 @@ class _MyHomePageState extends State<HomeScreen> {
                       mainAxisSize: MainAxisSize.min,
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Icon(
-                          Icons.villa,
-                          size: 20,
-                        ),
-                        SizedBox(width: 5),
-                        Text(
-                          "Villas",
-                          style: TextStyle(fontSize: 14),
-                        ),
+                        Icon(Icons.star, size: 18),  // Icône plus petite
+                        SizedBox(width: 6),  // Espacement plus petit
+                        Text("Popular", style: TextStyle(fontSize: 12)),  // Texte plus petit
                       ],
                     ),
                   ),
                 ),
+
+                // Tab Villas
                 Container(
-                  height: 50,
-                  padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                  height: 35,  // Hauteur réduite
+                  padding: const EdgeInsets.symmetric(horizontal: 15),
                   decoration: BoxDecoration(
-                    border: Border.all(
-                      color: Colors.grey,
-                      width: 2,
-                    ),
+                    border: Border.all(color: Colors.grey, width: 1),
                     borderRadius: BorderRadius.circular(50),
                   ),
                   child: const Tab(
@@ -185,27 +164,20 @@ class _MyHomePageState extends State<HomeScreen> {
                       mainAxisSize: MainAxisSize.min,
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Icon(
-                          Icons.hotel,
-                          size: 20,
-                        ),
-                        SizedBox(width: 5),
-                        Text(
-                          "Hotel",
-                          style: TextStyle(fontSize: 14),
-                        ),
+                        Icon(Icons.villa, size: 18),  // Icône plus petite
+                        SizedBox(width: 6),  // Espacement plus petit
+                        Text("Villas", style: TextStyle(fontSize: 12)),  // Texte plus petit
                       ],
                     ),
                   ),
                 ),
+
+                // Tab Hotel
                 Container(
-                  height: 50,
-                  padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                  height: 35,  // Hauteur réduite
+                  padding: const EdgeInsets.symmetric(horizontal: 15),
                   decoration: BoxDecoration(
-                    border: Border.all(
-                      color: Colors.grey,
-                      width: 2,
-                    ),
+                    border: Border.all(color: Colors.grey, width: 1),
                     borderRadius: BorderRadius.circular(50),
                   ),
                   child: const Tab(
@@ -213,29 +185,46 @@ class _MyHomePageState extends State<HomeScreen> {
                       mainAxisSize: MainAxisSize.min,
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Icon(
-                          Icons.apartment,
-                          size: 20,
-                        ),
-                        SizedBox(width: 5),
-                        Text(
-                          "Appartement",
-                          style: TextStyle(fontSize: 14),
-                        ),
+                        Icon(Icons.hotel, size: 18),  // Icône plus petite
+                        SizedBox(width: 6),  // Espacement plus petit
+                        Text("Hotel", style: TextStyle(fontSize: 12)),  // Texte plus petit
+                      ],
+                    ),
+                  ),
+                ),
+
+                // Tab Appartement
+                Container(
+                  height: 35,  // Hauteur réduite
+                  padding: const EdgeInsets.symmetric(horizontal: 15),
+                  decoration: BoxDecoration(
+                    border: Border.all(color: Colors.grey, width: 1),
+                    borderRadius: BorderRadius.circular(50),
+                  ),
+                  child: const Tab(
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(Icons.apartment, size: 18),  // Icône plus petite
+                        SizedBox(width: 6),  // Espacement plus petit
+                        Text("Appartement", style: TextStyle(fontSize: 12)),  // Texte plus petit
                       ],
                     ),
                   ),
                 ),
               ],
             ),
+
+            // TABBARVIEW
             Expanded(
               child: TabBarView(
                 children: [
                   _buildAll(),
                   _buildPopular(),
-                  _buildLogement(),
-                  _buildFeatured(),
-                  _getRecommend(),
+                  _buildVilla(),
+                  _buildHotel(),
+                  _buildAppartement(),
                 ],
               ),
             ),
@@ -245,54 +234,548 @@ class _MyHomePageState extends State<HomeScreen> {
     );
   }
 
-
-
   Widget _buildAll() {
     return ListView(
       shrinkWrap: true,
-      physics: const BouncingScrollPhysics(), // Permet le défilement
+      physics: const BouncingScrollPhysics(),
+      padding: EdgeInsets.all(5),
       children: [
-        const Padding(
-          padding: EdgeInsets.all(8.0),
-          child: Row(
-            children: [
-              Text(
-                'Recommended for you',
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-              ),
-            ],
-          ),
-        ),
-        const SizedBox(height: 20,),
-
+        // Recommended
         _getRecommend(),
+        const SizedBox(height: 20),
+        // Cities
         _buildCity(),
-        const SizedBox(height: 20,),
-
-        // Logements en vedette
+        const SizedBox(height: 20),
+        // Featured Stays
         _buildFeaturedStays(),
-        const SizedBox(height: 20,),
-
-        // Destinations populaires
+        const SizedBox(height: 20),
+        // Popular Destinations
         _buildPopularDestinations(),
-        const SizedBox(height: 20,),
-
-        // Offres spéciales
+        const SizedBox(height: 20),
+        // Special Offers
         _buildSpecialOffers(),
-        const SizedBox(height: 120,),
+        const SizedBox(height: 120),
       ],
     );
   }
+
+
+  // LES TABS VIEWS
+  Widget _buildPopular() {
+    return MasonryGridView.builder(
+      itemCount: 10,
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 16),
+      gridDelegate: const SliverSimpleGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: 2,
+      ),
+      itemBuilder: (context, index) {
+        return TweenAnimationBuilder(
+          tween: Tween<double>(begin: 0, end: 1),
+          duration: Duration(milliseconds: 500 + index * 100),
+          builder: (context, value, child) {
+            return Opacity(
+              opacity: value,
+              child: Transform.translate(
+                offset: Offset(0, (1 - value) * 20),
+                child: child,
+              ),
+            );
+          },
+          child: Center(
+            child: SizedBox(
+              width: 300,
+              child: Container(
+                margin: const EdgeInsets.all(6),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(16),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black12,
+                      blurRadius: 6,
+                      offset: Offset(0, 4),
+                    ),
+                  ],
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Stack(
+                      children: [
+                        ClipRRect(
+                          borderRadius: const BorderRadius.only(
+                            topLeft: Radius.circular(16),
+                            topRight: Radius.circular(16),
+                          ),
+                          child: Image.asset(
+                            "assets/images/tierra-mallorca-rgJ1J8SDEAY-unsplash.jpg",
+                            height: 160,
+                            width: double.infinity,
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                        Positioned(
+                          top: 8,
+                          right: 8,
+                          child: Icon(Icons.favorite_border, color: Colors.white),
+                        ),
+                      ],
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(8),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            "Hôtel populaire & moderne",
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 14,
+                            ),
+                          ),
+                          const SizedBox(height: 4),
+                          Row(
+                            children: [
+                              Icon(Icons.location_on, size: 13, color: Colors.grey[600]),
+                              const SizedBox(width: 4),
+                              Expanded(
+                                child: Text(
+                                  "Nice, France",
+                                  style: TextStyle(
+                                    fontSize: 12,
+                                    color: Colors.grey[600],
+                                  ),
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                              ),
+                            ],
+                          ),
+                          const SizedBox(height: 6),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                "98€/nuit",
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.green,
+                                  fontSize: 13,
+                                ),
+                              ),
+                              Row(
+                                children: [
+                                  Icon(Icons.star, size: 13, color: Colors.amber),
+                                  SizedBox(width: 2),
+                                  Text(
+                                    "4.7",
+                                    style: TextStyle(fontSize: 12),
+                                  ),
+                                ],
+                              )
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  Widget _buildVilla() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const SizedBox(height: 20),
+        // Encapsulation du MasonryGridView avec Expanded
+        Expanded(
+          child: MasonryGridView.builder(
+            itemCount: 16,
+            padding: const EdgeInsets.all(10),
+            gridDelegate: const SliverSimpleGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 2,
+            ),
+            itemBuilder: (context, index) => Padding(
+              padding: const EdgeInsets.all(5.0),
+              child: Stack(
+                children: [
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(16),
+                    child: Image.asset(
+                      "assets/images/florian-schmidinger-b_79nOqf95I-unsplash.jpg",
+                      height: 200,
+                      width: double.infinity,
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                  Positioned(
+                    top: 8,
+                    right: 8,
+                    child: IconButton(
+                      icon: Icon(Icons.favorite_border),
+                      color: Colors.white,
+                      onPressed: () {
+                        // action favori
+                      },
+                    ),
+                  ),
+                  Positioned(
+                    bottom: 0,
+                    left: 0,
+                    right: 0,
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: Colors.black54,
+                        borderRadius: const BorderRadius.only(
+                          bottomLeft: Radius.circular(16),
+                          bottomRight: Radius.circular(16),
+                        ),
+                      ),
+                      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            "Villa moderne avec piscine",
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 13,
+                            ),
+                          ),
+                          const SizedBox(height: 4),
+                          Row(
+                            children: [
+                              Icon(Icons.location_on, size: 13, color: Colors.white70),
+                              SizedBox(width: 4),
+                              Expanded(
+                                child: Text(
+                                  "Paris, France",
+                                  style: TextStyle(
+                                    fontSize: 11,
+                                    color: Colors.white70,
+                                  ),
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                              ),
+                            ],
+                          ),
+                          const SizedBox(height: 4),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                "2 ch. • 1 sdb",
+                                style: TextStyle(
+                                  fontSize: 11,
+                                  color: Colors.white70,
+                                ),
+                              ),
+                              Row(
+                                children: [
+                                  Icon(Icons.star, size: 13, color: Colors.amber),
+                                  SizedBox(width: 2),
+                                  Text(
+                                    "4.5",
+                                    style: TextStyle(
+                                      fontSize: 11,
+                                      color: Colors.white70,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              Text(
+                                "89€/nuit",
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildHotel() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const SizedBox(height: 20),
+        // Enveloppement de MasonryGridView avec Expanded
+        Expanded(
+          child: MasonryGridView.builder(
+            itemCount: 16,
+            padding: const EdgeInsets.all(10),
+            gridDelegate: const SliverSimpleGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 1,
+            ),
+            itemBuilder: (context, index) => Padding(
+              padding: const EdgeInsets.all(5.0),
+              child: Stack(
+                children: [
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(16),
+                    child: Image.asset(
+                      "assets/images/florian-schmidinger-b_79nOqf95I-unsplash.jpg",
+                      height: 220,
+                      width: double.infinity,
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                  Positioned(
+                    top: 8,
+                    right: 8,
+                    child: IconButton(
+                      icon: Icon(Icons.favorite_border),
+                      color: Colors.white,
+                      onPressed: () {
+                        // action favori
+                      },
+                    ),
+                  ),
+                  Positioned(
+                    bottom: 0,
+                    left: 0,
+                    right: 0,
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: Colors.black54,
+                        borderRadius: const BorderRadius.only(
+                          bottomLeft: Radius.circular(16),
+                          bottomRight: Radius.circular(16),
+                        ),
+                      ),
+                      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            "Villa moderne avec piscine",
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 14,
+                            ),
+                          ),
+                          const SizedBox(height: 4),
+                          Row(
+                            children: [
+                              Icon(Icons.location_on, size: 15, color: Colors.white70),
+                              SizedBox(width: 4),
+                              Expanded(
+                                child: Text(
+                                  "Paris, France",
+                                  style: TextStyle(
+                                    fontSize: 12,
+                                    color: Colors.white70,
+                                  ),
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                              ),
+                            ],
+                          ),
+                          const SizedBox(height: 4),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                "2 ch. • 1 sdb",
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  color: Colors.white70,
+                                ),
+                              ),
+                              Row(
+                                children: [
+                                  Icon(Icons.star, size: 15, color: Colors.amber),
+                                  SizedBox(width: 2),
+                                  Text(
+                                    "4.5",
+                                    style: TextStyle(
+                                      fontSize: 12,
+                                      color: Colors.white70,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              Text(
+                                "89€/nuit",
+                                style: TextStyle(
+                                  fontSize: 13,
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildAppartement() {
+    return MasonryGridView.builder(
+      itemCount: 16,
+      padding: const EdgeInsets.only(top: 20, left: 8, right: 8, bottom: 20),
+      gridDelegate: const SliverSimpleGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: 2,
+      ),
+      itemBuilder: (context, index) => Padding(
+        padding: const EdgeInsets.all(5.0),
+        child: Stack(
+          children: [
+            ClipRRect(
+              borderRadius: BorderRadius.circular(16),
+              child: Image.asset(
+                "assets/images/johnson-johnson-U6Q6zVDgmSs-unsplash.jpg",
+                height: 200,
+                width: double.infinity,
+                fit: BoxFit.cover,
+              ),
+            ),
+            Positioned(
+              top: 8,
+              right: 8,
+              child: IconButton(
+                icon: Icon(Icons.favorite_border),
+                color: Colors.white,
+                onPressed: () {
+                  // action favori
+                },
+              ),
+            ),
+            Positioned(
+              bottom: 0,
+              left: 0,
+              right: 0,
+              child: Container(
+                decoration: BoxDecoration(
+                  color: Colors.black54,
+                  borderRadius: const BorderRadius.only(
+                    bottomLeft: Radius.circular(16),
+                    bottomRight: Radius.circular(16),
+                  ),
+                ),
+                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      "Appartement cosy en centre-ville",
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 13,
+                      ),
+                    ),
+                    const SizedBox(height: 4),
+                    Row(
+                      children: [
+                        Icon(Icons.location_on, size: 13, color: Colors.white70),
+                        SizedBox(width: 4),
+                        Expanded(
+                          child: Text(
+                            "Lyon, France",
+                            style: TextStyle(
+                              fontSize: 11,
+                              color: Colors.white70,
+                            ),
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 4),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          "1 ch. • 1 salon",
+                          style: TextStyle(
+                            fontSize: 11,
+                            color: Colors.white70,
+                          ),
+                        ),
+                        Row(
+                          children: [
+                            Icon(Icons.star, size: 13, color: Colors.amber),
+                            SizedBox(width: 2),
+                            Text(
+                              "4.2",
+                              style: TextStyle(
+                                fontSize: 11,
+                                color: Colors.white70,
+                              ),
+                            ),
+                          ],
+                        ),
+                        Text(
+                          "65€/nuit",
+                          style: TextStyle(
+                            fontSize: 12,
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+
+  // LES ALL
 
   Widget _buildFeaturedStays() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Padding(
-          padding: EdgeInsets.symmetric(horizontal: 16.0),
-          child: Text(
-            'Featured Stays',
-            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16.0),
+          child: Row(
+            children: [
+              const Text(
+                'Featured Stays',
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              ),
+              const Spacer(),
+              TextButton(
+                onPressed: () {
+                  // Naviguer vers toutes les options de "Featured Stays"
+                },
+                child: const Text("See all"),
+              ),
+            ],
           ),
         ),
         const SizedBox(height: 10),
@@ -313,15 +796,54 @@ class _MyHomePageState extends State<HomeScreen> {
                       fit: BoxFit.cover,
                     ),
                   ),
-                  child: const Padding(
-                    padding: EdgeInsets.all(10.0),
-                    child: Align(
-                      alignment: Alignment.bottomLeft,
-                      child: Text(
-                        "Luxury Apartment",
-                        style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold),
+                  child: Stack(
+                    children: [
+                      Positioned(
+                        left: 10,
+                        bottom: 10,
+                        child: Container(
+                          padding: const EdgeInsets.all(8.0),
+                          decoration: BoxDecoration(
+                            color: Colors.black.withOpacity(0.5), // Fond semi-transparent
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const Text(
+                                "Luxury Apartment",
+                                style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold),
+                              ),
+                              const SizedBox(height: 5),
+                              const Text(
+                                "\$150 per night",
+                                style: TextStyle(color: Colors.white, fontSize: 14),
+                              ),
+                            ],
+                          ),
+                        ),
                       ),
-                    ),
+                      Positioned(
+                        right: 10,
+                        top: 10,
+                        child: Row(
+                          children: [
+                            IconButton(
+                              icon: const Icon(Icons.favorite_border, color: Colors.white),
+                              onPressed: () {
+                                // Logique pour ajouter aux favoris
+                              },
+                            ),
+                            IconButton(
+                              icon: const Icon(Icons.bookmark, color: Colors.white),
+                              onPressed: () {
+                                // Logique pour réserver
+                              },
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
                   ),
                 ),
               );
@@ -331,15 +853,27 @@ class _MyHomePageState extends State<HomeScreen> {
       ],
     );
   }
+
   Widget _buildPopularDestinations() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Padding(
-          padding: EdgeInsets.symmetric(horizontal: 16.0),
-          child: Text(
-            'Popular Destinations',
-            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16.0),
+          child: Row(
+            children: [
+              const Text(
+                'Popular Destinations',
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              ),
+              const Spacer(),
+              TextButton(
+                onPressed: () {
+                  // Naviguer vers toutes les destinations populaires
+                },
+                child: const Text("See all"),
+              ),
+            ],
           ),
         ),
         const SizedBox(height: 10),
@@ -360,15 +894,34 @@ class _MyHomePageState extends State<HomeScreen> {
                       fit: BoxFit.cover,
                     ),
                   ),
-                  child: const Padding(
-                    padding: EdgeInsets.all(10.0),
-                    child: Align(
-                      alignment: Alignment.bottomLeft,
-                      child: Text(
-                        "Paris",
-                        style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold),
+                  child: Stack(
+                    children: [
+                      Positioned(
+                        left: 10,
+                        bottom: 10,
+                        child: Container(
+                          padding: const EdgeInsets.all(8.0),
+                          decoration: BoxDecoration(
+                            color: Colors.black.withOpacity(0.5),
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          child: const Text(
+                            "Paris",
+                            style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold),
+                          ),
+                        ),
                       ),
-                    ),
+                      Positioned(
+                        right: 10,
+                        top: 10,
+                        child: IconButton(
+                          icon: const Icon(Icons.favorite_border, color: Colors.white),
+                          onPressed: () {
+                            // Logique pour ajouter aux favoris
+                          },
+                        ),
+                      ),
+                    ],
                   ),
                 ),
               );
@@ -378,15 +931,27 @@ class _MyHomePageState extends State<HomeScreen> {
       ],
     );
   }
+
   Widget _buildSpecialOffers() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Padding(
-          padding: EdgeInsets.symmetric(horizontal: 16.0),
-          child: Text(
-            'Special Offers',
-            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16.0),
+          child: Row(
+            children: [
+              const Text(
+                'Special Offers',
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              ),
+              const Spacer(),
+              TextButton(
+                onPressed: () {
+                  // Naviguer vers toutes les offres spéciales
+                },
+                child: const Text("See all"),
+              ),
+            ],
           ),
         ),
         const SizedBox(height: 10),
@@ -400,13 +965,201 @@ class _MyHomePageState extends State<HomeScreen> {
               fit: BoxFit.cover,
             ),
           ),
-          child: const Padding(
-            padding: EdgeInsets.all(10.0),
-            child: Align(
-              alignment: Alignment.bottomLeft,
-              child: Text(
-                "Get 20% off on your first booking!",
-                style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold),
+          child: Stack(
+            children: [
+              Positioned(
+                left: 10,
+                bottom: 10,
+                child: Container(
+                  padding: const EdgeInsets.all(8.0),
+                  decoration: BoxDecoration(
+                    color: Colors.black.withOpacity(0.5),
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: const Text(
+                    "Get 20% off on your first booking!",
+                    style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold),
+                  ),
+                ),
+              ),
+              Positioned(
+                right: 10,
+                top: 10,
+                child: IconButton(
+                  icon: const Icon(Icons.favorite_border, color: Colors.white),
+                  onPressed: () {
+                    // Logique pour ajouter aux favoris
+                  },
+                ),
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildCity() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16.0),
+          child: Row(
+            children: [
+              const Text(
+                'Apartments for Rent',
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              ),
+              const Spacer(),
+              TextButton(
+                onPressed: () {
+                  // Naviguer vers toutes les annonces
+                },
+                child: const Text("See all"),
+              ),
+            ],
+          ),
+        ),
+        const SizedBox(height: 10),
+        SizedBox(
+          height: 300,
+          child: ListView.builder(
+            scrollDirection: Axis.horizontal, // Défilement horizontal
+            itemCount: 7, // Nombre d'appartements affichés
+            itemBuilder: (context, index) {
+              return Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: InkWell(
+                  onTap: () {},
+                  child: Hero(
+                    tag: "apartment_$index",
+                    child: Container(
+                      width: 200,
+                      height: 300,
+                      decoration: BoxDecoration(
+                        image: const DecorationImage(
+                          image: AssetImage("assets/images/jacques-bopp-Hh18POSx5qk-unsplash.jpg"),
+                          fit: BoxFit.cover,
+                        ),
+                        borderRadius: BorderRadius.circular(25),
+                      ),
+                      child: Stack(
+                        children: <Widget>[
+                          Positioned(
+                            left: 10,
+                            bottom: 10,
+                            child: ConstrainedBox(
+                              constraints: BoxConstraints(
+                                maxWidth: 180, // Contrainte de largeur pour éviter les débordements
+                              ),
+                              child: Container(
+                                padding: const EdgeInsets.all(8.0),
+                                decoration: BoxDecoration(
+                                  color: Colors.black.withOpacity(0.5), // Fond semi-transparent
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      "Luxury Apartment",
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 16,
+                                      ),
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                    const SizedBox(height: 5),
+                                    Text(
+                                      "\$120 per night",
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 14,
+                                      ),
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                    const SizedBox(height: 5),
+                                    Row(
+                                      children: [
+                                        Icon(
+                                          Icons.bed,
+                                          color: Colors.white,
+                                          size: 18,
+                                        ),
+                                        const SizedBox(width: 5),
+                                        Text(
+                                          "3 Rooms",
+                                          style: TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 12,
+                                          ),
+                                        ),
+                                        const Spacer(),
+                                        IconButton(
+                                          icon: Icon(
+                                            Icons.favorite_border,
+                                            color: Colors.white,
+                                          ),
+                                          onPressed: () {
+                                            // Logique pour ajouter à favoris
+                                          },
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              );
+            },
+          ),
+        ),
+      ],
+    );
+  }
+
+  _getRecommend() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Row(
+            children: [
+              const Text(
+                'Recommended for you',
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              ),
+              const Spacer(),
+              TextButton(
+                onPressed: () {
+                  Get.to(() => DetailsPage());
+                },
+                child: const Text("See all"),
+              ),
+            ],
+          ),
+        ),
+        const SizedBox(height: 10),
+        SingleChildScrollView(
+          padding: const EdgeInsets.fromLTRB(15, 5, 0, 5),
+          scrollDirection: Axis.horizontal,
+          child: Row(
+            children: List.generate(
+              recommends.length,
+                  (index) => Padding(
+                padding: const EdgeInsets.only(right: 10),
+                child: RecommendItem(
+                  data: recommends[index],
+                ),
               ),
             ),
           ),
@@ -415,154 +1168,6 @@ class _MyHomePageState extends State<HomeScreen> {
     );
   }
 
-
-
-
-
-
-  Widget _buildCity() {
-    return SizedBox(
-      height: 300,
-      child: ListView.builder(
-        scrollDirection: Axis.horizontal, // Défilement horizontal
-        itemCount: 7,
-        itemBuilder: (context, index) {
-          return Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: InkWell(
-              onTap: () {},
-              child: Hero(
-                tag: "city_$index",
-                child: Container(
-                  width: 200,
-                  height: 300,
-                  decoration: BoxDecoration(
-                    image: const DecorationImage(
-                      image: AssetImage("assets/images/jacques-bopp-Hh18POSx5qk-unsplash.jpg"),
-                      fit: BoxFit.cover,
-                    ),
-                    borderRadius: BorderRadius.circular(25),
-                  ),
-                  child: const Stack(
-                    children: <Widget>[
-                      Positioned(
-                        left: 10,
-                        bottom: 0,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text("Titre", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
-                            Text("Description", style: TextStyle(color: Colors.white)),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ),
-          );
-        },
-      ),
-    );
-  }
-
-
-
-
-
-
-
-  Widget _buildLogement() {
-    return MasonryGridView.builder(
-      itemCount: 6,
-      gridDelegate: const SliverSimpleGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 2,),
-      itemBuilder: (context, index) => Padding(
-        padding: const EdgeInsets.all(5.0),
-        child: Container(
-          child: ClipRRect(
-            borderRadius: BorderRadius.circular(12),
-              child: Image.asset(
-                  "assets/images/florian-schmidinger-b_79nOqf95I-unsplash.jpg",
-              )
-          ),
-        ),
-      ),
-
-    );
-  }
-
-
-  Widget _buildPopular() {
-    return const Center(
-      child: Text(
-        "Popular Content",
-        style: TextStyle(fontSize: 18, color: AppColor.textColor),
-      ),
-    );
-  }
-
-
-
-  _getRecommend() {
-    return SingleChildScrollView(
-      padding: const EdgeInsets.fromLTRB(15, 5, 0, 5),
-      scrollDirection: Axis.horizontal,
-      child: Row(
-        children: List.generate(
-          recommends.length,
-              (index) => Padding(
-            padding: const EdgeInsets.only(right: 10),
-            child: RecommendItem(
-              data: recommends[index],
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-
-  _buildFeatured() {
-    return CarouselSlider(
-      options: CarouselOptions(
-        height: 300,
-        enlargeCenterPage: true,
-        disableCenter: true,
-        viewportFraction: .75,
-      ),
-      items: List.generate(
-        features.length,
-            (index) => FeatureItem(
-          data: features[index],
-          onTapFavorite: () {
-            setState(() {
-              features[index]["is_favorited"] =
-              !features[index]["is_favorited"];
-            });
-          },
-        ),
-      ),
-    );
-  }
-
-  _buildCities() {
-    return SingleChildScrollView(
-      padding: const EdgeInsets.fromLTRB(15, 5, 0, 10),
-      scrollDirection: Axis.horizontal,
-      child: Row(
-        children: List.generate(
-          cities.length,
-              (index) => Padding(
-            padding: const EdgeInsets.only(right: 8),
-            child: CityItem(
-              data: cities[index],
-            ),
-          ),
-        ),
-      ),
-    );
-  }
 
 }
 

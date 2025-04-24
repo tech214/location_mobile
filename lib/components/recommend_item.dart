@@ -18,7 +18,6 @@ class RecommendItem extends StatelessWidget {
       onTap: onTap,
       child: Container(
         margin: EdgeInsets.only(right: 10),
-        padding: EdgeInsets.all(10),
         width: 300,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(15),
