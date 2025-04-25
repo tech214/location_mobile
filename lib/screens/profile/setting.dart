@@ -4,9 +4,9 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:location_mobile/screens/profile/setting_item.dart';
 
 import '../../components/theme/color.dart';
-import '../../components/utils/data.dart';
 import '../../components/custom_image.dart';
 import '../../components/icon_box.dart';
+import '../../models/data.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({Key? key}) : super(key: key);

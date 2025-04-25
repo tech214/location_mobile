@@ -6,8 +6,13 @@ import '../../components/notification_box.dart';
 import '../../components/recommend_item.dart';
 import '../../components/searchBar.dart';
 import '../../components/theme/color.dart';
-import '../../components/utils/data.dart';
+import '../../models/data.dart';
 import '../../themes/app_theme.dart';
+import '../CityPage.dart';
+import '../FeaturedScreen.dart';
+import '../PopularScreen.dart';
+import '../RecommandedScreen.dart';
+import '../SpecialOffreScreen.dart';
 import '../details/appartement_details_screen.dart';
 import '../details/hotel_details_screen.dart';
 import '../details/logement_details_screen.dart';
@@ -951,7 +956,7 @@ class _MyHomePageState extends State<HomeScreen> {
               const Spacer(),
               TextButton(
                 onPressed: () {
-                  // Naviguer vers toutes les options de "Featured Stays"
+                  Get.to(() => FeaturedStaysPage(featured: features));
                 },
                 child: const Text("See all"),
               ),
@@ -1049,7 +1054,7 @@ class _MyHomePageState extends State<HomeScreen> {
               const Spacer(),
               TextButton(
                 onPressed: () {
-                  // Naviguer vers toutes les destinations populaires
+                  Get.to(() => PopularPage(populars: populars,));
                 },
                 child: const Text("See all"),
               ),
@@ -1127,7 +1132,7 @@ class _MyHomePageState extends State<HomeScreen> {
               const Spacer(),
               TextButton(
                 onPressed: () {
-                  // Naviguer vers toutes les offres spéciales
+                  Get.to(() => OffreSpecialePage(specials: specialsData));
                 },
                 child: const Text("See all"),
               ),
@@ -1188,13 +1193,13 @@ class _MyHomePageState extends State<HomeScreen> {
           child: Row(
             children: [
               const Text(
-                'Apartments for Rent',
+                'City for Rent',
                 style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
               ),
               const Spacer(),
               TextButton(
                 onPressed: () {
-                  // Naviguer vers toutes les annonces
+                  Get.to(() => CityPage(cities: cities));
                 },
                 child: const Text("See all"),
               ),
@@ -1321,6 +1326,7 @@ class _MyHomePageState extends State<HomeScreen> {
               const Spacer(),
               TextButton(
                 onPressed: () {
+                  Get.to(() => AllRecommendsPage(recommends: recommends));
                 },
                 child: const Text("See all"),
               ),
@@ -1337,7 +1343,7 @@ class _MyHomePageState extends State<HomeScreen> {
                   (index) => Padding(
                 padding: const EdgeInsets.only(right: 10),
                 child: RecommendItem(
-                  data: recommends[index],
+                  data: recommends[index], // Utilisation de données fictives
                 ),
               ),
             ),

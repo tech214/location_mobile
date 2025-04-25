@@ -23,26 +23,26 @@ class _RootAppState extends State<RootApp> with TickerProviderStateMixin {
       "page": HomeScreen(),
     },
     {
-      "icon": "assets/icons/search.svg",
+      "icon": "assets/icons/explore.svg",
       "page": Container(
         alignment: Alignment.center,
         child: Text("Explore"),
       ),
     },
     {
-      "icon": "assets/icons/favorite.svg",
+      "icon": "assets/icons/booking.svg",
       "page": Container(
         alignment: Alignment.center,
-        child: Text("Favories"),
+        child: Text("Reversations"),
       ),
     },
-    {
-      "icon": "assets/icons/message.svg",
-      "page": Container(
-        alignment: Alignment.center,
-        child: Text("Messages"),
-      ),
-    },
+    // {
+    //   "icon": "assets/icons/message.svg",
+    //   "page": Container(
+    //     alignment: Alignment.center,
+    //     child: Text("Messages"),
+    //   ),
+    // },
     {
       "icon": "assets/icons/profile.svg",
       "page": ProfilePage(),
