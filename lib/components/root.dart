@@ -44,7 +44,7 @@ class _RootAppState extends State<RootApp> with TickerProviderStateMixin {
       ),
     },
     {
-      "icon": "assets/icons/setting.svg",
+      "icon": "assets/icons/profile.svg",
       "page": ProfilePage(),
     },
   ];

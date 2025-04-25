@@ -1,14 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 import '../../components/notification_box.dart';
 import '../../components/recommend_item.dart';
 import '../../components/searchBar.dart';
 import '../../components/theme/color.dart';
 import '../../components/utils/data.dart';
 import '../../themes/app_theme.dart';
-import '../details/details.dart';
+import '../details/appartement_details_screen.dart';
+import '../details/hotel_details_screen.dart';
+import '../details/logement_details_screen.dart';
+import '../details/villa_details_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -21,7 +24,6 @@ class _MyHomePageState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-
       body: CustomScrollView(
         slivers: [
 
@@ -42,31 +44,35 @@ class _MyHomePageState extends State<HomeScreen> {
         onPressed: (){
         },
         tooltip: 'onTap',
-        child: const Icon(Icons.add),
+        child: SvgPicture.asset(
+            "assets/icons/explore.svg",
+          width: 30,
+          height: 30,
+        ),
       ),
     );
   }
 
 
   Widget _builAppBar() {
-    return Row(
+    return const Row(
       children: [
         Icon(
           Icons.place_outlined,
           color: AppColor.labelColor,
           size: 20,
         ),
-        const SizedBox(
+        SizedBox(
           width: 3,
         ),
         Text(
-          "Phnom Penh",
+          "Kipe",
           style: TextStyle(
             color: AppColor.darker,
             fontSize: 13,
           ),
         ),
-        const Spacer(),
+        Spacer(),
         NotificationBox(
           notifiedNumber: 1,
         )
@@ -75,16 +81,16 @@ class _MyHomePageState extends State<HomeScreen> {
   }
   Widget _buildBody() {
     return DefaultTabController(
-      length: 5,
+      length: 6,
       child: Container(
         height: MediaQuery.of(context).size.height,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            Padding(
-              padding: const EdgeInsets.only(left: 20.0, right: 20.0, top: 10),
-              child: const SearchField(),
+            const Padding(
+              padding: EdgeInsets.only(left: 20.0, right: 20.0, top: 10),
+              child: SearchField(),
             ),
             const Padding(
               padding: EdgeInsets.only(left: 20.0, top: 20),
@@ -151,6 +157,27 @@ class _MyHomePageState extends State<HomeScreen> {
                   ),
                 ),
 
+                // Tab Logement
+                Container(
+                  height: 35,  // Hauteur réduite
+                  padding: const EdgeInsets.symmetric(horizontal: 15),
+                  decoration: BoxDecoration(
+                    border: Border.all(color: Colors.grey, width: 1),
+                    borderRadius: BorderRadius.circular(50),
+                  ),
+                  child: const Tab(
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(Icons.villa, size: 18),  // Icône plus petite
+                        SizedBox(width: 6),  // Espacement plus petit
+                        Text("Location", style: TextStyle(fontSize: 12)),  // Texte plus petit
+                      ],
+                    ),
+                  ),
+                ),
+
                 // Tab Villas
                 Container(
                   height: 35,  // Hauteur réduite
@@ -180,12 +207,16 @@ class _MyHomePageState extends State<HomeScreen> {
                     border: Border.all(color: Colors.grey, width: 1),
                     borderRadius: BorderRadius.circular(50),
                   ),
-                  child: const Tab(
+                  child: Tab(
                     child: Row(
                       mainAxisSize: MainAxisSize.min,
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Icon(Icons.hotel, size: 18),  // Icône plus petite
+                       SvgPicture.asset(
+                           "assets/icons/hotel.svg",
+                         height: 20,
+                         width: 20,
+                       ),  // Icône plus petite
                         SizedBox(width: 6),  // Espacement plus petit
                         Text("Hotel", style: TextStyle(fontSize: 12)),  // Texte plus petit
                       ],
@@ -222,6 +253,7 @@ class _MyHomePageState extends State<HomeScreen> {
                 children: [
                   _buildAll(),
                   _buildPopular(),
+                  _buildLogement(),
                   _buildVilla(),
                   _buildHotel(),
                   _buildAppartement(),
@@ -238,7 +270,7 @@ class _MyHomePageState extends State<HomeScreen> {
     return ListView(
       shrinkWrap: true,
       physics: const BouncingScrollPhysics(),
-      padding: EdgeInsets.all(5),
+      padding: const EdgeInsets.all(5),
       children: [
         // Recommended
         _getRecommend(),
@@ -290,7 +322,7 @@ class _MyHomePageState extends State<HomeScreen> {
                   color: Colors.white,
                   borderRadius: BorderRadius.circular(16),
                   boxShadow: [
-                    BoxShadow(
+                    const BoxShadow(
                       color: Colors.black12,
                       blurRadius: 6,
                       offset: Offset(0, 4),
@@ -314,7 +346,7 @@ class _MyHomePageState extends State<HomeScreen> {
                             fit: BoxFit.cover,
                           ),
                         ),
-                        Positioned(
+                        const Positioned(
                           top: 8,
                           right: 8,
                           child: Icon(Icons.favorite_border, color: Colors.white),
@@ -326,7 +358,7 @@ class _MyHomePageState extends State<HomeScreen> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(
+                          const Text(
                             "Hôtel populaire & moderne",
                             style: TextStyle(
                               fontWeight: FontWeight.bold,
@@ -351,7 +383,7 @@ class _MyHomePageState extends State<HomeScreen> {
                             ],
                           ),
                           const SizedBox(height: 6),
-                          Row(
+                          const Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text(
@@ -388,366 +420,514 @@ class _MyHomePageState extends State<HomeScreen> {
   }
 
   Widget _buildVilla() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        const SizedBox(height: 20),
-        // Encapsulation du MasonryGridView avec Expanded
-        Expanded(
-          child: MasonryGridView.builder(
-            itemCount: 16,
-            padding: const EdgeInsets.all(10),
-            gridDelegate: const SliverSimpleGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 2,
-            ),
-            itemBuilder: (context, index) => Padding(
-              padding: const EdgeInsets.all(5.0),
-              child: Stack(
-                children: [
-                  ClipRRect(
-                    borderRadius: BorderRadius.circular(16),
-                    child: Image.asset(
-                      "assets/images/florian-schmidinger-b_79nOqf95I-unsplash.jpg",
-                      height: 200,
-                      width: double.infinity,
-                      fit: BoxFit.cover,
-                    ),
-                  ),
-                  Positioned(
-                    top: 8,
-                    right: 8,
-                    child: IconButton(
-                      icon: Icon(Icons.favorite_border),
-                      color: Colors.white,
-                      onPressed: () {
-                        // action favori
-                      },
-                    ),
-                  ),
-                  Positioned(
-                    bottom: 0,
-                    left: 0,
-                    right: 0,
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: Colors.black54,
-                        borderRadius: const BorderRadius.only(
-                          bottomLeft: Radius.circular(16),
-                          bottomRight: Radius.circular(16),
-                        ),
+    return GestureDetector(
+      behavior: HitTestBehavior.translucent,
+      onTap: (){
+        Get.to(() => const VillaDetailsScreen());
+      },
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const SizedBox(height: 20),
+          // Encapsulation du MasonryGridView avec Expanded
+          Expanded(
+            child: MasonryGridView.builder(
+              itemCount: 16,
+              padding: const EdgeInsets.all(10),
+              gridDelegate: const SliverSimpleGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 2,
+              ),
+              itemBuilder: (context, index) => Padding(
+                padding: const EdgeInsets.all(5.0),
+                child: Stack(
+                  children: [
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(16),
+                      child: Image.asset(
+                        "assets/images/florian-schmidinger-b_79nOqf95I-unsplash.jpg",
+                        height: 200,
+                        width: double.infinity,
+                        fit: BoxFit.cover,
                       ),
-                      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            "Villa moderne avec piscine",
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 13,
+                    ),
+                    Positioned(
+                      top: 8,
+                      right: 8,
+                      child: IconButton(
+                        icon: const Icon(Icons.favorite_border),
+                        color: Colors.white,
+                        onPressed: () {
+                          // action favori
+                        },
+                      ),
+                    ),
+                    Positioned(
+                      bottom: 0,
+                      left: 0,
+                      right: 0,
+                      child: Container(
+                        decoration: const BoxDecoration(
+                          color: Colors.black54,
+                          borderRadius: BorderRadius.only(
+                            bottomLeft: Radius.circular(16),
+                            bottomRight: Radius.circular(16),
+                          ),
+                        ),
+                        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+                        child: const Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              "Villa moderne avec piscine",
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 13,
+                              ),
                             ),
-                          ),
-                          const SizedBox(height: 4),
-                          Row(
-                            children: [
-                              Icon(Icons.location_on, size: 13, color: Colors.white70),
-                              SizedBox(width: 4),
-                              Expanded(
-                                child: Text(
-                                  "Paris, France",
-                                  style: TextStyle(
-                                    fontSize: 11,
-                                    color: Colors.white70,
-                                  ),
-                                  overflow: TextOverflow.ellipsis,
-                                ),
-                              ),
-                            ],
-                          ),
-                          const SizedBox(height: 4),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                "2 ch. • 1 sdb",
-                                style: TextStyle(
-                                  fontSize: 11,
-                                  color: Colors.white70,
-                                ),
-                              ),
-                              Row(
-                                children: [
-                                  Icon(Icons.star, size: 13, color: Colors.amber),
-                                  SizedBox(width: 2),
-                                  Text(
-                                    "4.5",
+                            SizedBox(height: 4),
+                            Row(
+                              children: [
+                                Icon(Icons.location_on, size: 13, color: Colors.white70),
+                                SizedBox(width: 4),
+                                Expanded(
+                                  child: Text(
+                                    "Paris, France",
                                     style: TextStyle(
                                       fontSize: 11,
                                       color: Colors.white70,
                                     ),
+                                    overflow: TextOverflow.ellipsis,
                                   ),
-                                ],
-                              ),
-                              Text(
-                                "89€/nuit",
-                                style: TextStyle(
-                                  fontSize: 12,
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold,
                                 ),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ),
-      ],
-    );
-  }
-
-  Widget _buildHotel() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        const SizedBox(height: 20),
-        // Enveloppement de MasonryGridView avec Expanded
-        Expanded(
-          child: MasonryGridView.builder(
-            itemCount: 16,
-            padding: const EdgeInsets.all(10),
-            gridDelegate: const SliverSimpleGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 1,
-            ),
-            itemBuilder: (context, index) => Padding(
-              padding: const EdgeInsets.all(5.0),
-              child: Stack(
-                children: [
-                  ClipRRect(
-                    borderRadius: BorderRadius.circular(16),
-                    child: Image.asset(
-                      "assets/images/florian-schmidinger-b_79nOqf95I-unsplash.jpg",
-                      height: 220,
-                      width: double.infinity,
-                      fit: BoxFit.cover,
-                    ),
-                  ),
-                  Positioned(
-                    top: 8,
-                    right: 8,
-                    child: IconButton(
-                      icon: Icon(Icons.favorite_border),
-                      color: Colors.white,
-                      onPressed: () {
-                        // action favori
-                      },
-                    ),
-                  ),
-                  Positioned(
-                    bottom: 0,
-                    left: 0,
-                    right: 0,
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: Colors.black54,
-                        borderRadius: const BorderRadius.only(
-                          bottomLeft: Radius.circular(16),
-                          bottomRight: Radius.circular(16),
-                        ),
-                      ),
-                      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            "Villa moderne avec piscine",
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 14,
+                              ],
                             ),
-                          ),
-                          const SizedBox(height: 4),
-                          Row(
-                            children: [
-                              Icon(Icons.location_on, size: 15, color: Colors.white70),
-                              SizedBox(width: 4),
-                              Expanded(
-                                child: Text(
-                                  "Paris, France",
+                            SizedBox(height: 4),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  "2 ch. • 1 sdb",
                                   style: TextStyle(
-                                    fontSize: 12,
+                                    fontSize: 11,
                                     color: Colors.white70,
                                   ),
-                                  overflow: TextOverflow.ellipsis,
                                 ),
-                              ),
-                            ],
-                          ),
-                          const SizedBox(height: 4),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                "2 ch. • 1 sdb",
-                                style: TextStyle(
-                                  fontSize: 12,
-                                  color: Colors.white70,
-                                ),
-                              ),
-                              Row(
-                                children: [
-                                  Icon(Icons.star, size: 15, color: Colors.amber),
-                                  SizedBox(width: 2),
-                                  Text(
-                                    "4.5",
-                                    style: TextStyle(
-                                      fontSize: 12,
-                                      color: Colors.white70,
+                                Row(
+                                  children: [
+                                    Icon(Icons.star, size: 13, color: Colors.amber),
+                                    SizedBox(width: 2),
+                                    Text(
+                                      "4.5",
+                                      style: TextStyle(
+                                        fontSize: 11,
+                                        color: Colors.white70,
+                                      ),
                                     ),
-                                  ),
-                                ],
-                              ),
-                              Text(
-                                "89€/nuit",
-                                style: TextStyle(
-                                  fontSize: 13,
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold,
+                                  ],
                                 ),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ),
-      ],
-    );
-  }
-
-  Widget _buildAppartement() {
-    return MasonryGridView.builder(
-      itemCount: 16,
-      padding: const EdgeInsets.only(top: 20, left: 8, right: 8, bottom: 20),
-      gridDelegate: const SliverSimpleGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 2,
-      ),
-      itemBuilder: (context, index) => Padding(
-        padding: const EdgeInsets.all(5.0),
-        child: Stack(
-          children: [
-            ClipRRect(
-              borderRadius: BorderRadius.circular(16),
-              child: Image.asset(
-                "assets/images/johnson-johnson-U6Q6zVDgmSs-unsplash.jpg",
-                height: 200,
-                width: double.infinity,
-                fit: BoxFit.cover,
-              ),
-            ),
-            Positioned(
-              top: 8,
-              right: 8,
-              child: IconButton(
-                icon: Icon(Icons.favorite_border),
-                color: Colors.white,
-                onPressed: () {
-                  // action favori
-                },
-              ),
-            ),
-            Positioned(
-              bottom: 0,
-              left: 0,
-              right: 0,
-              child: Container(
-                decoration: BoxDecoration(
-                  color: Colors.black54,
-                  borderRadius: const BorderRadius.only(
-                    bottomLeft: Radius.circular(16),
-                    bottomRight: Radius.circular(16),
-                  ),
-                ),
-                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      "Appartement cosy en centre-ville",
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 13,
-                      ),
-                    ),
-                    const SizedBox(height: 4),
-                    Row(
-                      children: [
-                        Icon(Icons.location_on, size: 13, color: Colors.white70),
-                        SizedBox(width: 4),
-                        Expanded(
-                          child: Text(
-                            "Lyon, France",
-                            style: TextStyle(
-                              fontSize: 11,
-                              color: Colors.white70,
-                            ),
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 4),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          "1 ch. • 1 salon",
-                          style: TextStyle(
-                            fontSize: 11,
-                            color: Colors.white70,
-                          ),
-                        ),
-                        Row(
-                          children: [
-                            Icon(Icons.star, size: 13, color: Colors.amber),
-                            SizedBox(width: 2),
-                            Text(
-                              "4.2",
-                              style: TextStyle(
-                                fontSize: 11,
-                                color: Colors.white70,
-                              ),
+                                Text(
+                                  "89€/nuit",
+                                  style: TextStyle(
+                                    fontSize: 12,
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ],
                             ),
                           ],
                         ),
-                        Text(
-                          "65€/nuit",
-                          style: TextStyle(
-                            fontSize: 12,
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ],
+                      ),
                     ),
                   ],
                 ),
               ),
             ),
-          ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildLogement() {
+    return GestureDetector(
+      behavior: HitTestBehavior.translucent,
+      onTap: (){
+        Get.to(() => const LogementDetailsScreen());
+      },
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const SizedBox(height: 20),
+          Expanded(
+            child: MasonryGridView.builder(
+              itemCount: 16,
+              padding: const EdgeInsets.all(10),
+              gridDelegate: const SliverSimpleGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 2,
+              ),
+              itemBuilder: (context, index) => Padding(
+                padding: const EdgeInsets.all(5.0),
+                child: Stack(
+                  children: [
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(16),
+                      child: Image.asset(
+                        "assets/images/florian-schmidinger-b_79nOqf95I-unsplash.jpg",
+                        height: 200,
+                        width: double.infinity,
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                    Positioned(
+                      top: 8,
+                      right: 8,
+                      child: IconButton(
+                        icon: const Icon(Icons.favorite_border),
+                        color: Colors.white,
+                        onPressed: () {
+                          // action favori
+                        },
+                      ),
+                    ),
+                    Positioned(
+                      bottom: 0,
+                      left: 0,
+                      right: 0,
+                      child: Container(
+                        decoration: const BoxDecoration(
+                          color: Colors.black54,
+                          borderRadius: BorderRadius.only(
+                            bottomLeft: Radius.circular(16),
+                            bottomRight: Radius.circular(16),
+                          ),
+                        ),
+                        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+                        child: const Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              "Villa moderne avec piscine",
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 13,
+                              ),
+                            ),
+                            SizedBox(height: 4),
+                            Row(
+                              children: [
+                                Icon(Icons.location_on, size: 13, color: Colors.white70),
+                                SizedBox(width: 4),
+                                Expanded(
+                                  child: Text(
+                                    "Paris, France",
+                                    style: TextStyle(
+                                      fontSize: 11,
+                                      color: Colors.white70,
+                                    ),
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                ),
+                              ],
+                            ),
+                            SizedBox(height: 4),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  "2 ch. • 1 sdb",
+                                  style: TextStyle(
+                                    fontSize: 11,
+                                    color: Colors.white70,
+                                  ),
+                                ),
+                                Row(
+                                  children: [
+                                    Icon(Icons.star, size: 13, color: Colors.amber),
+                                    SizedBox(width: 2),
+                                    Text(
+                                      "4.5",
+                                      style: TextStyle(
+                                        fontSize: 11,
+                                        color: Colors.white70,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                Text(
+                                  "89€/nuit",
+                                  style: TextStyle(
+                                    fontSize: 12,
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildHotel() {
+    return GestureDetector(
+      behavior: HitTestBehavior.translucent,
+      onTap: (){
+        Get.to(() => const HotelDetailsScreen());
+      },
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const SizedBox(height: 20),
+          // Enveloppement de MasonryGridView avec Expanded
+          Expanded(
+            child: MasonryGridView.builder(
+              itemCount: 16,
+              padding: const EdgeInsets.all(10),
+              gridDelegate: const SliverSimpleGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 1,
+              ),
+              itemBuilder: (context, index) => Padding(
+                padding: const EdgeInsets.all(5.0),
+                child: Stack(
+                  children: [
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(16),
+                      child: Image.asset(
+                        "assets/images/florian-schmidinger-b_79nOqf95I-unsplash.jpg",
+                        height: 220,
+                        width: double.infinity,
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                    Positioned(
+                      top: 8,
+                      right: 8,
+                      child: IconButton(
+                        icon: const Icon(Icons.favorite_border),
+                        color: Colors.white,
+                        onPressed: () {
+                          // action favori
+                        },
+                      ),
+                    ),
+                    Positioned(
+                      bottom: 0,
+                      left: 0,
+                      right: 0,
+                      child: Container(
+                        decoration: const BoxDecoration(
+                          color: Colors.black54,
+                          borderRadius: BorderRadius.only(
+                            bottomLeft: Radius.circular(16),
+                            bottomRight: Radius.circular(16),
+                          ),
+                        ),
+                        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                        child: const Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              "Villa moderne avec piscine",
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 14,
+                              ),
+                            ),
+                            SizedBox(height: 4),
+                            Row(
+                              children: [
+                                Icon(Icons.location_on, size: 15, color: Colors.white70),
+                                SizedBox(width: 4),
+                                Expanded(
+                                  child: Text(
+                                    "Paris, France",
+                                    style: TextStyle(
+                                      fontSize: 12,
+                                      color: Colors.white70,
+                                    ),
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                ),
+                              ],
+                            ),
+                            SizedBox(height: 4),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  "2 ch. • 1 sdb",
+                                  style: TextStyle(
+                                    fontSize: 12,
+                                    color: Colors.white70,
+                                  ),
+                                ),
+                                Row(
+                                  children: [
+                                    Icon(Icons.star, size: 15, color: Colors.amber),
+                                    SizedBox(width: 2),
+                                    Text(
+                                      "4.5",
+                                      style: TextStyle(
+                                        fontSize: 12,
+                                        color: Colors.white70,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                Text(
+                                  "89€/nuit",
+                                  style: TextStyle(
+                                    fontSize: 13,
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildAppartement() {
+    return GestureDetector(
+      behavior: HitTestBehavior.translucent,
+      onTap: (){
+        Get.to(() => const ApartmentDetailsScreen());
+      },
+      child: MasonryGridView.builder(
+        itemCount: 16,
+        padding: const EdgeInsets.only(top: 20, left: 8, right: 8, bottom: 20),
+        gridDelegate: const SliverSimpleGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 2,
+        ),
+        itemBuilder: (context, index) => Padding(
+          padding: const EdgeInsets.all(5.0),
+          child: Stack(
+            children: [
+              ClipRRect(
+                borderRadius: BorderRadius.circular(16),
+                child: Image.asset(
+                  "assets/images/johnson-johnson-U6Q6zVDgmSs-unsplash.jpg",
+                  height: 200,
+                  width: double.infinity,
+                  fit: BoxFit.cover,
+                ),
+              ),
+              Positioned(
+                top: 8,
+                right: 8,
+                child: IconButton(
+                  icon: const Icon(Icons.favorite_border),
+                  color: Colors.white,
+                  onPressed: () {
+                    // action favori
+                  },
+                ),
+              ),
+              Positioned(
+                bottom: 0,
+                left: 0,
+                right: 0,
+                child: Container(
+                  decoration: const BoxDecoration(
+                    color: Colors.black54,
+                    borderRadius: BorderRadius.only(
+                      bottomLeft: Radius.circular(16),
+                      bottomRight: Radius.circular(16),
+                    ),
+                  ),
+                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+                  child: const Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        "Appartement cosy en centre-ville",
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 13,
+                        ),
+                      ),
+                      SizedBox(height: 4),
+                      Row(
+                        children: [
+                          Icon(Icons.location_on, size: 13, color: Colors.white70),
+                          SizedBox(width: 4),
+                          Expanded(
+                            child: Text(
+                              "Lyon, France",
+                              style: TextStyle(
+                                fontSize: 11,
+                                color: Colors.white70,
+                              ),
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
+                        ],
+                      ),
+                      SizedBox(height: 4),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            "1 ch. • 1 salon",
+                            style: TextStyle(
+                              fontSize: 11,
+                              color: Colors.white70,
+                            ),
+                          ),
+                          Row(
+                            children: [
+                              Icon(Icons.star, size: 13, color: Colors.amber),
+                              SizedBox(width: 2),
+                              Text(
+                                "4.2",
+                                style: TextStyle(
+                                  fontSize: 11,
+                                  color: Colors.white70,
+                                ),
+                              ),
+                            ],
+                          ),
+                          Text(
+                            "65€/nuit",
+                            style: TextStyle(
+                              fontSize: 12,
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -807,15 +987,15 @@ class _MyHomePageState extends State<HomeScreen> {
                             color: Colors.black.withOpacity(0.5), // Fond semi-transparent
                             borderRadius: BorderRadius.circular(10),
                           ),
-                          child: Column(
+                          child: const Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              const Text(
+                              Text(
                                 "Luxury Apartment",
                                 style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold),
                               ),
-                              const SizedBox(height: 5),
-                              const Text(
+                              SizedBox(height: 5),
+                              Text(
                                 "\$150 per night",
                                 style: TextStyle(color: Colors.white, fontSize: 14),
                               ),
@@ -1050,7 +1230,7 @@ class _MyHomePageState extends State<HomeScreen> {
                             left: 10,
                             bottom: 10,
                             child: ConstrainedBox(
-                              constraints: BoxConstraints(
+                              constraints: const BoxConstraints(
                                 maxWidth: 180, // Contrainte de largeur pour éviter les débordements
                               ),
                               child: Container(
@@ -1062,7 +1242,7 @@ class _MyHomePageState extends State<HomeScreen> {
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Text(
+                                    const Text(
                                       "Luxury Apartment",
                                       style: TextStyle(
                                         color: Colors.white,
@@ -1072,7 +1252,7 @@ class _MyHomePageState extends State<HomeScreen> {
                                       overflow: TextOverflow.ellipsis,
                                     ),
                                     const SizedBox(height: 5),
-                                    Text(
+                                    const Text(
                                       "\$120 per night",
                                       style: TextStyle(
                                         color: Colors.white,
@@ -1083,13 +1263,13 @@ class _MyHomePageState extends State<HomeScreen> {
                                     const SizedBox(height: 5),
                                     Row(
                                       children: [
-                                        Icon(
+                                        const Icon(
                                           Icons.bed,
                                           color: Colors.white,
                                           size: 18,
                                         ),
                                         const SizedBox(width: 5),
-                                        Text(
+                                        const Text(
                                           "3 Rooms",
                                           style: TextStyle(
                                             color: Colors.white,
@@ -1098,7 +1278,7 @@ class _MyHomePageState extends State<HomeScreen> {
                                         ),
                                         const Spacer(),
                                         IconButton(
-                                          icon: Icon(
+                                          icon: const Icon(
                                             Icons.favorite_border,
                                             color: Colors.white,
                                           ),
@@ -1141,7 +1321,6 @@ class _MyHomePageState extends State<HomeScreen> {
               const Spacer(),
               TextButton(
                 onPressed: () {
-                  Get.to(() => DetailsPage());
                 },
                 child: const Text("See all"),
               ),
