@@ -5,10 +5,13 @@ import 'package:location_mobile/firebase_options.dart';
 import 'package:location_mobile/screens/home/home_screen.dart';
 import 'package:location_mobile/themes/app_theme.dart';
 import 'package:location_mobile/welcom_screen/omboading_screen.dart';
+import 'package:intl/date_symbol_data_local.dart';
+
 
 import 'components/root.dart';
 
 void main() async {
+  await initializeDateFormatting('fr_FR', null); // 👈 Obligatoire pour le français
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform

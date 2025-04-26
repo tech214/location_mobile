@@ -5,7 +5,8 @@ import 'package:location_mobile/components/theme/color.dart';
 import 'package:location_mobile/components/utils/constant.dart';
 import 'package:location_mobile/screens/home/home_screen.dart';
 
-import '../screens/profile/setting.dart';
+import '../screens/bookingScreen.dart';
+import '../screens/profile/profile.dart';
 import 'bottomNavigationBar.dart';
 
 class RootApp extends StatefulWidget {
@@ -31,10 +32,7 @@ class _RootAppState extends State<RootApp> with TickerProviderStateMixin {
     },
     {
       "icon": "assets/icons/booking.svg",
-      "page": Container(
-        alignment: Alignment.center,
-        child: Text("Reversations"),
-      ),
+      "page": BookingsPage(),
     },
     // {
     //   "icon": "assets/icons/message.svg",

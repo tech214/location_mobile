@@ -34,12 +34,9 @@ class NotificationBox extends StatelessWidget {
 
   Widget _buildIconNotified() {
     return custom_badge.Badge(
-
-      /*badgeColor: AppColor.actionColor,
-      padding: EdgeInsets.all(3),*/
-      position: BadgePosition.topEnd(top: -7, end: 0),
+      position: BadgePosition.topEnd(top: -9, end: -12,),
       badgeContent: Text(
-        '',
+        '1',
         style: TextStyle(color: Colors.white),
       ),
       child: _buildIcon(),

@@ -8,15 +8,14 @@ import '../../components/searchBar.dart';
 import '../../components/theme/color.dart';
 import '../../models/data.dart';
 import '../../themes/app_theme.dart';
-import '../CityPage.dart';
 import '../FeaturedScreen.dart';
 import '../PopularScreen.dart';
 import '../RecommandedScreen.dart';
-import '../SpecialOffreScreen.dart';
 import '../details/appartement_details_screen.dart';
 import '../details/hotel_details_screen.dart';
 import '../details/logement_details_screen.dart';
 import '../details/villa_details_screen.dart';
+import '../notificationScreen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -45,45 +44,41 @@ class _MyHomePageState extends State<HomeScreen> {
         ],
       ),
 
-      floatingActionButton: FloatingActionButton(
-        onPressed: (){
-        },
-        tooltip: 'onTap',
-        child: SvgPicture.asset(
-            "assets/icons/explore.svg",
-          width: 30,
-          height: 30,
-        ),
-      ),
     );
   }
 
 
   Widget _builAppBar() {
-    return const Row(
+    return  Row(
       children: [
-        Icon(
+        const Icon(
           Icons.place_outlined,
           color: AppColor.labelColor,
           size: 20,
         ),
-        SizedBox(
+        const SizedBox(
           width: 3,
         ),
-        Text(
+        const Text(
           "Kipe",
           style: TextStyle(
             color: AppColor.darker,
             fontSize: 13,
           ),
         ),
-        Spacer(),
-        NotificationBox(
-          notifiedNumber: 1,
+        const Spacer(),
+        GestureDetector(
+          onTap: (){
+            Get.to(() => const NotificationsPage());
+          },
+          child: const NotificationBox(
+            notifiedNumber: 1,
+          ),
         )
       ],
     );
   }
+
   Widget _buildBody() {
     return DefaultTabController(
       length: 6,
@@ -222,8 +217,8 @@ class _MyHomePageState extends State<HomeScreen> {
                          height: 20,
                          width: 20,
                        ),  // Icône plus petite
-                        SizedBox(width: 6),  // Espacement plus petit
-                        Text("Hotel", style: TextStyle(fontSize: 12)),  // Texte plus petit
+                        const SizedBox(width: 6),  // Espacement plus petit
+                        const Text("Hotel", style: TextStyle(fontSize: 12)),  // Texte plus petit
                       ],
                     ),
                   ),
@@ -280,9 +275,6 @@ class _MyHomePageState extends State<HomeScreen> {
         // Recommended
         _getRecommend(),
         const SizedBox(height: 20),
-        // Cities
-        _buildCity(),
-        const SizedBox(height: 20),
         // Featured Stays
         _buildFeaturedStays(),
         const SizedBox(height: 20),
@@ -295,7 +287,6 @@ class _MyHomePageState extends State<HomeScreen> {
       ],
     );
   }
-
 
   // LES TABS VIEWS
   Widget _buildPopular() {
@@ -1121,21 +1112,15 @@ class _MyHomePageState extends State<HomeScreen> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16.0),
+        const Padding(
+          padding: EdgeInsets.symmetric(horizontal: 16.0),
           child: Row(
             children: [
-              const Text(
+              Text(
                 'Special Offers',
                 style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
               ),
-              const Spacer(),
-              TextButton(
-                onPressed: () {
-                  Get.to(() => OffreSpecialePage(specials: specialsData));
-                },
-                child: const Text("See all"),
-              ),
+              Spacer(),
             ],
           ),
         ),
@@ -1178,133 +1163,6 @@ class _MyHomePageState extends State<HomeScreen> {
                 ),
               ),
             ],
-          ),
-        ),
-      ],
-    );
-  }
-
-  Widget _buildCity() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16.0),
-          child: Row(
-            children: [
-              const Text(
-                'City for Rent',
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-              ),
-              const Spacer(),
-              TextButton(
-                onPressed: () {
-                  Get.to(() => CityPage(cities: cities));
-                },
-                child: const Text("See all"),
-              ),
-            ],
-          ),
-        ),
-        const SizedBox(height: 10),
-        SizedBox(
-          height: 300,
-          child: ListView.builder(
-            scrollDirection: Axis.horizontal, // Défilement horizontal
-            itemCount: 7, // Nombre d'appartements affichés
-            itemBuilder: (context, index) {
-              return Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: InkWell(
-                  onTap: () {},
-                  child: Hero(
-                    tag: "apartment_$index",
-                    child: Container(
-                      width: 200,
-                      height: 300,
-                      decoration: BoxDecoration(
-                        image: const DecorationImage(
-                          image: AssetImage("assets/images/jacques-bopp-Hh18POSx5qk-unsplash.jpg"),
-                          fit: BoxFit.cover,
-                        ),
-                        borderRadius: BorderRadius.circular(25),
-                      ),
-                      child: Stack(
-                        children: <Widget>[
-                          Positioned(
-                            left: 10,
-                            bottom: 10,
-                            child: ConstrainedBox(
-                              constraints: const BoxConstraints(
-                                maxWidth: 180, // Contrainte de largeur pour éviter les débordements
-                              ),
-                              child: Container(
-                                padding: const EdgeInsets.all(8.0),
-                                decoration: BoxDecoration(
-                                  color: Colors.black.withOpacity(0.5), // Fond semi-transparent
-                                  borderRadius: BorderRadius.circular(10),
-                                ),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    const Text(
-                                      "Luxury Apartment",
-                                      style: TextStyle(
-                                        color: Colors.white,
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 16,
-                                      ),
-                                      overflow: TextOverflow.ellipsis,
-                                    ),
-                                    const SizedBox(height: 5),
-                                    const Text(
-                                      "\$120 per night",
-                                      style: TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 14,
-                                      ),
-                                      overflow: TextOverflow.ellipsis,
-                                    ),
-                                    const SizedBox(height: 5),
-                                    Row(
-                                      children: [
-                                        const Icon(
-                                          Icons.bed,
-                                          color: Colors.white,
-                                          size: 18,
-                                        ),
-                                        const SizedBox(width: 5),
-                                        const Text(
-                                          "3 Rooms",
-                                          style: TextStyle(
-                                            color: Colors.white,
-                                            fontSize: 12,
-                                          ),
-                                        ),
-                                        const Spacer(),
-                                        IconButton(
-                                          icon: const Icon(
-                                            Icons.favorite_border,
-                                            color: Colors.white,
-                                          ),
-                                          onPressed: () {
-                                            // Logique pour ajouter à favoris
-                                          },
-                                        ),
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-              );
-            },
           ),
         ),
       ],
@@ -1358,6 +1216,8 @@ class _MyHomePageState extends State<HomeScreen> {
 
 
 class TabBarWithChoiceChip extends StatefulWidget {
+  const TabBarWithChoiceChip({super.key});
+
   @override
   _TabBarWithChoiceChipState createState() => _TabBarWithChoiceChipState();
 }

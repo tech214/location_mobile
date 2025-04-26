@@ -17,31 +17,40 @@ class RecommendItem extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        margin: EdgeInsets.only(right: 10),
+        margin: const EdgeInsets.only(right: 12),
+        padding: const EdgeInsets.all(10),
         width: 300,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(15),
           color: Colors.white,
           boxShadow: [
             BoxShadow(
-              color: Colors.grey.withOpacity(0.1),
-              spreadRadius: 1,
-              blurRadius: 1,
-              offset: Offset(1, 1), // changes position of shadow
+              color: Colors.grey.withOpacity(0.08),
+              spreadRadius: 2,
+              blurRadius: 6,
+              offset: const Offset(2, 4),
             ),
           ],
         ),
         child: Row(
           children: [
             _buildImage(),
-            const SizedBox(
-              width: 10,
-            ),
-            Expanded(
-              child: buildInfo(),
-            )
+            const SizedBox(width: 12),
+            Expanded(child: buildInfo()),
           ],
         ),
+      ),
+    );
+  }
+
+  Widget _buildImage() {
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(12),
+      child: CustomImage(
+        data["image"],
+        width: 90,
+        height: 90,
+        fit: BoxFit.cover,
       ),
     );
   }
@@ -49,6 +58,7 @@ class RecommendItem extends StatelessWidget {
   Widget buildInfo() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Text(
           data["name"],
@@ -57,22 +67,18 @@ class RecommendItem extends StatelessWidget {
           style: TextStyle(
             color: AppColor.textColor,
             fontSize: 16,
-            fontWeight: FontWeight.w600,
+            fontWeight: FontWeight.w700,
           ),
         ),
-        const SizedBox(
-          height: 5,
-        ),
+        const SizedBox(height: 6),
         Text(
           data["type"],
           style: TextStyle(
-            fontSize: 12,
+            fontSize: 13,
             color: AppColor.labelColor,
           ),
         ),
-        const SizedBox(
-          height: 15,
-        ),
+        const SizedBox(height: 12),
         _buildRateAndPrice(),
       ],
     );
@@ -81,37 +87,22 @@ class RecommendItem extends StatelessWidget {
   Widget _buildRateAndPrice() {
     return Row(
       children: [
-        Icon(
-          Icons.star,
-          size: 14,
-          color: AppColor.yellow,
+        Icon(Icons.star, size: 16, color: AppColor.yellow),
+        const SizedBox(width: 4),
+        Text(
+          data["rate"],
+          style: const TextStyle(fontSize: 13, color: Colors.grey),
         ),
-        const SizedBox(
-          width: 3,
-        ),
-        Expanded(
-          child: Text(
-            data["rate"],
-            style: TextStyle(fontSize: 12, color: Colors.grey),
-          ),
-        ),
+        const Spacer(),
         Text(
           data["price"],
           style: TextStyle(
-            fontSize: 14,
-            fontWeight: FontWeight.w500,
+            fontSize: 15,
+            fontWeight: FontWeight.bold,
             color: AppColor.primary,
           ),
         ),
       ],
-    );
-  }
-
-  Widget _buildImage() {
-    return CustomImage(
-      data["image"],
-      radius: 15,
-      height: 80,
     );
   }
 }
