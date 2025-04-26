@@ -148,6 +148,14 @@ class _ProfilePageState extends State<ProfilePage> with SingleTickerProviderStat
                         leadingIconColor: AppColor.green,
                         onTap: _navigateToPrivacy,
                       ),
+                      const SizedBox(height: 12),
+                      // Ici on ajoute le bouton Logout
+                      SettingItem(
+                        title: "Logout",
+                        leadingIcon: Icons.logout,
+                        leadingIconColor: Colors.redAccent,
+                        onTap: _showConfirmLogout,
+                      ),
                     ],
                   ),
                 ),
@@ -220,29 +228,22 @@ class _ProfilePageState extends State<ProfilePage> with SingleTickerProviderStat
     );
   }
 
-  void _navigateToChangePassword() {
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => const ChangePasswordPage()),
-    );
-  }
-
   _showConfirmLogout() {
     showCupertinoModalPopup(
       context: context,
       builder: (context) => CupertinoActionSheet(
-        message: const Text("Are you sure you want to log out?"),
+        message: Text("Would you like to log out?"),
         actions: [
           CupertinoActionSheetAction(
             onPressed: () {},
-            child: const Text(
+            child: Text(
               "Log Out",
               style: TextStyle(color: AppColor.actionColor),
             ),
           )
         ],
         cancelButton: CupertinoActionSheetAction(
-          child: const Text("Cancel"),
+          child: Text("Cancel"),
           onPressed: () {
             Navigator.of(context).pop();
           },
@@ -250,20 +251,7 @@ class _ProfilePageState extends State<ProfilePage> with SingleTickerProviderStat
       ),
     );
   }
+
+
 }
 
-class ChangePasswordPage extends StatelessWidget {
-  const ChangePasswordPage({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text("Change Password"),
-      ),
-      body: const Center(
-        child: Text("Change password page content."),
-      ),
-    );
-  }
-}

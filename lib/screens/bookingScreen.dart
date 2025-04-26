@@ -1,6 +1,30 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
+import '../components/actionsButton.dart';
+import '../components/customeAppBar.dart';
+
+void main() {
+  runApp(const MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Reservations',
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+        fontFamily: 'Arial',
+      ),
+      home: const BookingsPage(),
+      debugShowCheckedModeBanner: false,
+    );
+  }
+}
+
 class BookingsPage extends StatelessWidget {
   const BookingsPage({super.key});
 
@@ -34,12 +58,18 @@ class BookingsPage extends StatelessWidget {
     ];
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("Mes Réservations"),
-        centerTitle: true,
-        elevation: 1,
+      appBar: CustomAppBar(
+        title: 'Reservations',
+        backgroundColor: Theme.of(context).appBarTheme,
       ),
-      body: ListView.builder(
+      body: bookings.isEmpty
+          ? const Center(
+        child: Text(
+          "Aucune réservation pour le moment.",
+          style: TextStyle(fontSize: 18, color: Colors.grey),
+        ),
+      )
+          : ListView.builder(
         padding: const EdgeInsets.all(16),
         itemCount: bookings.length,
         itemBuilder: (context, index) {
@@ -51,33 +81,13 @@ class BookingsPage extends StatelessWidget {
   }
 }
 
-class BookingCard extends StatefulWidget {
+class BookingCard extends StatelessWidget {
   final BookingItem booking;
 
   const BookingCard({super.key, required this.booking});
 
-  @override
-  _BookingCardState createState() => _BookingCardState();
-}
-
-class _BookingCardState extends State<BookingCard> {
-  late ValueNotifier<double> _scaleNotifier;
-
-  @override
-  void initState() {
-    super.initState();
-    // Initialisation du ValueNotifier pour gérer l'animation du zoom
-    _scaleNotifier = ValueNotifier(1.0);
-  }
-
-  @override
-  void dispose() {
-    _scaleNotifier.dispose();
-    super.dispose();
-  }
-
   Color getStatusColor() {
-    switch (widget.booking.status) {
+    switch (booking.status) {
       case BookingStatus.confirmed:
         return Colors.green;
       case BookingStatus.pending:
@@ -88,7 +98,7 @@ class _BookingCardState extends State<BookingCard> {
   }
 
   IconData getStatusIcon() {
-    switch (widget.booking.status) {
+    switch (booking.status) {
       case BookingStatus.confirmed:
         return Icons.check_circle;
       case BookingStatus.pending:
@@ -98,127 +108,116 @@ class _BookingCardState extends State<BookingCard> {
     }
   }
 
+  String getStatusText() {
+    switch (booking.status) {
+      case BookingStatus.confirmed:
+        return "Confirmée";
+      case BookingStatus.pending:
+        return "En attente";
+      case BookingStatus.cancelled:
+        return "Annulée";
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final dateFormat = DateFormat('dd MMM yyyy', 'fr_FR');
-    final stayDates = "${dateFormat.format(widget.booking.startDate)} → ${dateFormat.format(widget.booking.endDate)}";
+    final stayDates = "${dateFormat.format(booking.startDate)} → ${dateFormat.format(booking.endDate)}";
 
     return GestureDetector(
       onTap: () {
-        // Action au clic (ouvrir les détails par exemple)
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (_) => BookingDetailsPage(booking: booking),
+          ),
+        );
       },
-      child: AnimatedContainer(
-        duration: const Duration(milliseconds: 600),
+      child: Container(
         margin: const EdgeInsets.only(bottom: 20),
         decoration: BoxDecoration(
           gradient: LinearGradient(
-            colors: [Colors.white.withOpacity(0.85), Colors.white],
+            colors: [Colors.white.withOpacity(0.9), Colors.white],
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
           ),
           borderRadius: BorderRadius.circular(30),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withOpacity(0.15),
-              blurRadius: 30,
-              offset: const Offset(0, 12),
+              color: Colors.black.withOpacity(0.1),
+              blurRadius: 20,
+              offset: const Offset(0, 10),
             )
           ],
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Image avec effet zoom/défilement
-            ClipRRect(
-              borderRadius: const BorderRadius.vertical(top: Radius.circular(30)),
-              child: Stack(
-                alignment: Alignment.center,
-                children: [
-                  ValueListenableBuilder<double>(
-                    valueListenable: _scaleNotifier,
-                    builder: (context, scale, child) {
-                      return Transform.scale(
-                        scale: scale, // Effet de zoom dynamique
-                        child: Image.asset(
-                          widget.booking.imageUrl,
-                          height: 250,
-                          width: double.infinity,
-                          fit: BoxFit.cover,
-                          color: Colors.black.withOpacity(0.3),
-                          colorBlendMode: BlendMode.darken,
-                        ),
-                      );
-                    },
-                  ),
-                  Container(
-                    color: Colors.black.withOpacity(0.3),
-                    height: 250,
+            Stack(
+              children: [
+                ClipRRect(
+                  borderRadius: const BorderRadius.vertical(top: Radius.circular(30)),
+                  child: Image.asset(
+                    booking.imageUrl,
+                    height: 220,
                     width: double.infinity,
+                    fit: BoxFit.cover,
                   ),
-                  Positioned(
-                    bottom: 20,
+                ),
+                Positioned(
+                  top: 20,
+                  right: 20,
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                    decoration: BoxDecoration(
+                      color: getStatusColor().withOpacity(0.9),
+                      borderRadius: BorderRadius.circular(20),
+                    ),
                     child: Text(
-                      widget.booking.title,
+                      getStatusText(),
                       style: const TextStyle(
-                        fontSize: 26,
-                        fontWeight: FontWeight.bold,
                         color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 14,
                       ),
                     ),
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
-            // Card Content avec animation fluide
             Padding(
               padding: const EdgeInsets.all(20),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // Location avec icône élégante
+                  Text(
+                    booking.title,
+                    style: const TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  const SizedBox(height: 8),
                   Row(
                     children: [
-                      const Icon(Icons.location_on_outlined, size: 22, color: Colors.grey),
-                      const SizedBox(width: 8),
+                      const Icon(Icons.location_on_outlined, size: 20, color: Colors.grey),
+                      const SizedBox(width: 6),
                       Text(
-                        widget.booking.location,
-                        style: const TextStyle(color: Colors.grey, fontSize: 17),
+                        booking.location,
+                        style: const TextStyle(color: Colors.grey, fontSize: 16),
                       ),
                     ],
                   ),
                   const SizedBox(height: 8),
-                  // Dates de réservation
                   Row(
                     children: [
-                      const Icon(Icons.calendar_today_outlined, size: 22, color: Colors.grey),
-                      const SizedBox(width: 8),
+                      const Icon(Icons.calendar_today_outlined, size: 20, color: Colors.grey),
+                      const SizedBox(width: 6),
                       Text(
                         stayDates,
-                        style: const TextStyle(color: Colors.black87, fontSize: 17),
+                        style: const TextStyle(color: Colors.black87, fontSize: 16),
                       ),
                     ],
-                  ),
-                  const SizedBox(height: 12),
-                  // Statut avec animation de couleur
-                  AnimatedDefaultTextStyle(
-                    duration: const Duration(milliseconds: 400),
-                    style: TextStyle(
-                      color: getStatusColor(),
-                      fontWeight: FontWeight.w700,
-                      fontSize: 18,
-                    ),
-                    child: Row(
-                      children: [
-                        Icon(getStatusIcon(), color: getStatusColor(), size: 26),
-                        const SizedBox(width: 8),
-                        Text(
-                          _statusText(widget.booking.status),
-                          style: TextStyle(
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                      ],
-                    ),
                   ),
                 ],
               ),
@@ -228,16 +227,111 @@ class _BookingCardState extends State<BookingCard> {
       ),
     );
   }
+}
 
-  String _statusText(BookingStatus status) {
-    switch (status) {
-      case BookingStatus.confirmed:
-        return "Confirmée";
-      case BookingStatus.pending:
-        return "En attente";
-      case BookingStatus.cancelled:
-        return "Annulée";
-    }
+class BookingDetailsPage extends StatelessWidget {
+  final BookingItem booking;
+
+  const BookingDetailsPage({super.key, required this.booking});
+
+  @override
+  Widget build(BuildContext context) {
+    final dateFormat = DateFormat('dd MMM yyyy', 'fr_FR');
+
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text("Détails"),
+      ),
+      body: ListView(
+        children: [
+          ClipRRect(
+            borderRadius: const BorderRadius.vertical(bottom: Radius.circular(30)),
+            child: Image.asset(
+              booking.imageUrl,
+              height: 300,
+              width: double.infinity,
+              fit: BoxFit.cover,
+            ),
+          ),
+          const SizedBox(height: 20),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  booking.title,
+                  style: const TextStyle(fontSize: 26, fontWeight: FontWeight.bold),
+                ),
+                const SizedBox(height: 12),
+                Row(
+                  children: [
+                    const Icon(Icons.location_on_outlined, size: 22, color: Colors.grey),
+                    const SizedBox(width: 6),
+                    Text(
+                      booking.location,
+                      style: const TextStyle(fontSize: 18, color: Colors.grey),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 20),
+                Row(
+                  children: [
+                    const Icon(Icons.date_range, size: 22, color: Colors.grey),
+                    const SizedBox(width: 6),
+                    Text(
+                      "${dateFormat.format(booking.startDate)} → ${dateFormat.format(booking.endDate)}",
+                      style: const TextStyle(fontSize: 18),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 20),
+                Row(
+                  children: [
+                    Icon(
+                      booking.status == BookingStatus.confirmed
+                          ? Icons.check_circle
+                          : booking.status == BookingStatus.pending
+                          ? Icons.schedule
+                          : Icons.cancel,
+                      color: booking.status == BookingStatus.confirmed
+                          ? Colors.green
+                          : booking.status == BookingStatus.pending
+                          ? Colors.orange
+                          : Colors.redAccent,
+                      size: 26,
+                    ),
+                    const SizedBox(width: 8),
+                    Text(
+                      booking.status == BookingStatus.confirmed
+                          ? "Confirmée"
+                          : booking.status == BookingStatus.pending
+                          ? "En attente"
+                          : "Annulée",
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                        color: booking.status == BookingStatus.confirmed
+                            ? Colors.green
+                            : booking.status == BookingStatus.pending
+                            ? Colors.orange
+                            : Colors.redAccent,
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 50),
+                ActionButton(
+                  title: 'Annuler',
+                  onPressed: () { },
+                  backgroundColor: Colors.redAccent,
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
   }
 }
 

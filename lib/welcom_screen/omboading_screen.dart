@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 
+import '../components/theme/color.dart';
 import '../screens/auth/login.dart';
 import '../themes/app_theme.dart';
 
@@ -65,8 +66,8 @@ class OnboardingScreen extends StatelessWidget {
                         width: w * 0.8,
                         margin: const EdgeInsets.only(
                             bottom: 20, left: 20, right: 20),
-                        decoration: const BoxDecoration(
-                          color: AppThemes.primaryColor,
+                        decoration:  BoxDecoration(
+                          color: AppColor.primary,
                           borderRadius: BorderRadius.all(Radius.circular(30)),
                         ),
                         child: const Center(

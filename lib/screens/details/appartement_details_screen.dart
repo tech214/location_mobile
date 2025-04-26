@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../../components/actionsButton.dart';
+import '../../components/backButton.dart';
+import '../../components/favorite_box.dart';
+
 class ApartmentDetailsScreen extends StatelessWidget {
   const ApartmentDetailsScreen({super.key});
 
@@ -34,17 +38,13 @@ class ApartmentDetailsScreen extends StatelessWidget {
                         children: [
                           CircleAvatar(
                             backgroundColor: Colors.white.withOpacity(0.7),
-                            child: IconButton(
-                              icon: const Icon(Icons.arrow_back, color: Colors.black),
-                              onPressed: () => Get.back(),
-                            ),
+                            child: BackButtonBox()
                           ),
                           const Spacer(),
                           CircleAvatar(
                             backgroundColor: Colors.white.withOpacity(0.7),
-                            child: IconButton(
-                              icon: const Icon(Icons.favorite_border, color: Colors.black),
-                              onPressed: () {},
+                            child: FavoriteBox(
+                              isFavorited: true,
                             ),
                           ),
                         ],
@@ -167,16 +167,14 @@ class ApartmentDetailsScreen extends StatelessWidget {
 
                   const SizedBox(height: 30),
                   // Bouton de réservation
-                  Center(
-                    child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        padding: const EdgeInsets.symmetric(horizontal: 48, vertical: 16),
-                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                  Container(
+                    margin: EdgeInsets.only(left: 25, right: 25),
+                    child: Center(
+                      child: ActionButton(
+                        title: 'Réserver',
+                        onPressed: () { },
+                        backgroundColor: Colors.green,
                       ),
-                      onPressed: () {
-                        // Action réservation
-                      },
-                      child: const Text('Réserver maintenant', style: TextStyle(fontSize: 16)),
                     ),
                   ),
                   const SizedBox(height: 20),

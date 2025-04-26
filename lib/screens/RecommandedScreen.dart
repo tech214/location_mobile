@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
+import 'package:location_mobile/components/customeAppBar.dart';
 
 class AllRecommendsPage extends StatelessWidget {
   final List recommends;
@@ -10,10 +11,9 @@ class AllRecommendsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color(0xFFF5F6FA),
-      appBar: AppBar(
-        title: const Text("recommandations"),
-        foregroundColor: Colors.white,
-        elevation: 0,
+      appBar: CustomAppBar(
+          title: "Recommader",
+        backgroundColor: Theme.of(context).appBarTheme,
       ),
       body: AnimationLimiter(
         child: ListView.builder(

@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../../components/actionsButton.dart';
+import '../../components/backButton.dart';
+import '../../components/favorite_box.dart';
+import '../../components/galerie_images.dart';
+
 class LogementDetailsScreen extends StatefulWidget {
   const LogementDetailsScreen({super.key});
 
@@ -44,7 +49,6 @@ class _LogementDetailsScreenState extends State<LogementDetailsScreen>
   @override
   Widget build(BuildContext context) {
     final double imageHeight = MediaQuery.of(context).size.height * 0.35;
-
     return Scaffold(
       body: SingleChildScrollView(
         child: Column(
@@ -73,18 +77,14 @@ class _LogementDetailsScreenState extends State<LogementDetailsScreen>
                         child: Row(
                           children: [
                             CircleAvatar(
-                              backgroundColor: Colors.white.withOpacity(0.7),
-                              child: IconButton(
-                                icon: const Icon(Icons.arrow_back, color: Colors.black),
-                                onPressed: () => Get.back(),
-                              ),
+                                backgroundColor: Colors.white.withOpacity(0.7),
+                                child: BackButtonBox()
                             ),
                             const Spacer(),
                             CircleAvatar(
                               backgroundColor: Colors.white.withOpacity(0.7),
-                              child: IconButton(
-                                icon: const Icon(Icons.favorite_border, color: Colors.black),
-                                onPressed: () {},
+                              child: FavoriteBox(
+                                isFavorited: true,
                               ),
                             ),
                           ],
@@ -266,34 +266,32 @@ class _LogementDetailsScreenState extends State<LogementDetailsScreen>
                       children: [
                         Text('Galerie d\'images', style: Theme.of(context).textTheme.titleMedium!.copyWith(fontWeight: FontWeight.bold)),
                         const SizedBox(height: 8),
-                        SingleChildScrollView(
+                        const SingleChildScrollView(
                           scrollDirection: Axis.horizontal,
                           child: Row(
                             children: [
-                              Image.asset('assets/images/johnson-johnson-U6Q6zVDgmSs-unsplash.jpg', width: 120, height: 120, fit: BoxFit.cover),
-                              const SizedBox(width: 10),
-                              Image.asset('assets/images/florian-schmidinger-b_79nOqf95I-unsplash.jpg', width: 120, height: 120, fit: BoxFit.cover),
-                              const SizedBox(width: 10),
-                              Image.asset('assets/images/johnson-johnson-U6Q6zVDgmSs-unsplash.jpg', width: 120, height: 120, fit: BoxFit.cover),
+                              GalleryImage(imagePath: 'assets/images/johnson-johnson-U6Q6zVDgmSs-unsplash.jpg'),
+                              SizedBox(width: 10),
+                              GalleryImage(imagePath: 'assets/images/florian-schmidinger-b_79nOqf95I-unsplash.jpg'),
+                              SizedBox(width: 10),
+                              GalleryImage(imagePath: 'assets/images/johnson-johnson-U6Q6zVDgmSs-unsplash.jpg'),
                             ],
                           ),
                         ),
+
                       ],
                     ),
                   ),
-
                   const SizedBox(height: 30),
                   // Bouton de réservation
-                  Center(
-                    child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        padding: const EdgeInsets.symmetric(horizontal: 48, vertical: 16),
-                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                  Container(
+                    margin: EdgeInsets.only(left: 25, right: 25),
+                    child: Center(
+                      child: ActionButton(
+                        title: 'Réserver',
+                        onPressed: () { },
+                        backgroundColor: Colors.green,
                       ),
-                      onPressed: () {
-                        // Action réservation
-                      },
-                      child: const Text('Réserver maintenant', style: TextStyle(fontSize: 16)),
                     ),
                   ),
                   const SizedBox(height: 20),
@@ -305,7 +303,9 @@ class _LogementDetailsScreenState extends State<LogementDetailsScreen>
       ),
     );
   }
+
 }
+
 
 // Offre avec icône et étiquette
 class OfferIcon extends StatelessWidget {

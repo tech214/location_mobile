@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../../components/actionsButton.dart';
+import '../../components/backButton.dart';
+import '../../components/favorite_box.dart';
+import '../../components/galerie_images.dart';
+
 class VillaDetailsScreen extends StatelessWidget {
   const VillaDetailsScreen({super.key});
 
@@ -24,20 +29,19 @@ class VillaDetailsScreen extends StatelessWidget {
               Positioned(
                 top: 40,
                 left: 16,
-                child: CircleAvatar(
-                  backgroundColor: Colors.white,
-                  child: IconButton(
-                    onPressed: () => Get.back(),
-                    icon: const Icon(Icons.arrow_back, color: Colors.black),
-                  ),
+                child:  CircleAvatar(
+                    backgroundColor: Colors.white.withOpacity(0.7),
+                    child: BackButtonBox()
                 ),
               ),
               Positioned(
                 top: 40,
                 right: 16,
-                child: const CircleAvatar(
-                  backgroundColor: Colors.white,
-                  child: Icon(Icons.favorite_border, color: Colors.black),
+                child:  CircleAvatar(
+                  backgroundColor: Colors.white.withOpacity(0.7),
+                  child: FavoriteBox(
+                    isFavorited: true,
+                  ),
                 ),
               ),
             ],
@@ -104,35 +108,25 @@ class VillaDetailsScreen extends StatelessWidget {
                       height: 120,
                       child: ListView(
                         scrollDirection: Axis.horizontal,
-                        children: [
-                          ClipRRect(
-                            borderRadius: BorderRadius.circular(12),
-                            child: Image.asset('assets/images/frames-for-your-heart-mR1CIDduGLc-unsplash.jpg', width: 160, fit: BoxFit.cover),
-                          ),
-                          const SizedBox(width: 12),
-                          ClipRRect(
-                            borderRadius: BorderRadius.circular(12),
-                            child: Image.asset('assets/images/frames-for-your-heart-mR1CIDduGLc-unsplash.jpg', width: 160, fit: BoxFit.cover),
-                          ),
-                          const SizedBox(width: 12),
-                          ClipRRect(
-                            borderRadius: BorderRadius.circular(12),
-                            child: Image.asset('assets/images/frames-for-your-heart-mR1CIDduGLc-unsplash.jpg', width: 160, fit: BoxFit.cover),
-                          ),
+                        children: const [
+                          GalleryImage(imagePath: 'assets/images/frames-for-your-heart-mR1CIDduGLc-unsplash.jpg',),
+                          SizedBox(width: 12),
+                          GalleryImage(imagePath: 'assets/images/frames-for-your-heart-mR1CIDduGLc-unsplash.jpg',),
+                          SizedBox(width: 12),
+                          GalleryImage(imagePath: 'assets/images/frames-for-your-heart-mR1CIDduGLc-unsplash.jpg',),
+                          SizedBox(width: 12),
                         ],
                       ),
                     ),
                     const SizedBox(height: 30),
-                    Center(
-                      child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          padding: const EdgeInsets.symmetric(horizontal: 48, vertical: 16),
-                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                    Container(
+                      margin: EdgeInsets.only(left: 25, right: 25),
+                      child: Center(
+                        child: ActionButton(
+                          title: 'Réserver',
+                          onPressed: () { },
+                          backgroundColor: Colors.green,
                         ),
-                        onPressed: () {
-                          // aller vers la page de réservation
-                        },
-                        child: const Text('Réserver maintenant'),
                       ),
                     ),
                   ],

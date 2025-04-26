@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:location_mobile/screens/auth/login.dart';
 import '../../components/bezier.dart';
+import '../../components/theme/color.dart';
 import '../../themes/app_theme.dart';
 import '../home/home_screen.dart';
 
@@ -160,7 +161,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
     return Scaffold(
-      backgroundColor: AppThemes.secondaryColor,
+      backgroundColor: AppColor.secondary,
       body: Container(
         height: height,
         child: Stack(

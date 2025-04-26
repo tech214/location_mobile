@@ -2,6 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:panorama_viewer/panorama_viewer.dart';
 
+import '../../components/actionsButton.dart';
+import '../../components/backButton.dart';
+import '../../components/favorite_box.dart';
+import '../../components/galerie_images.dart';
+
 class HotelDetailsScreen extends StatelessWidget {
   const HotelDetailsScreen({super.key});
 
@@ -26,20 +31,16 @@ class HotelDetailsScreen extends StatelessWidget {
                 Positioned(
                   top: 40,
                   left: 16,
-                  child: CircleAvatar(
-                    backgroundColor: Colors.white,
-                    child: IconButton(
-                      icon: const Icon(Icons.arrow_back, color: Colors.black),
-                      onPressed: () => Get.back(),
-                    ),
-                  ),
+                  child: BackButtonBox(),
                 ),
                 Positioned(
                   top: 40,
                   right: 16,
-                  child: const CircleAvatar(
-                    backgroundColor: Colors.white,
-                    child: Icon(Icons.favorite_border, color: Colors.black),
+                  child:  CircleAvatar(
+                    backgroundColor: Colors.white.withOpacity(0.7),
+                    child: FavoriteBox(
+                      isFavorited: true,
+                    ),
                   ),
                 ),
               ],
@@ -126,30 +127,26 @@ class HotelDetailsScreen extends StatelessWidget {
                         scrollDirection: Axis.horizontal,
                         children: [
                           for (var path in [
+                            'assets/images/frames-for-your-heart-mR1CIDduGLc-unsplash.jpg',
                             'assets/images/kara-eads-L7EwHkq1B2s-unsplash.jpg',
-                            'assets/images/kara-eads-L7EwHkq1B2s-unsplash.jpg',
-                            'assets/images/kara-eads-L7EwHkq1B2s-unsplash.jpg',
+                            'assets/images/todd-kent-178j8tJrNlc-unsplash.jpg',
                           ])
                             Padding(
                               padding: const EdgeInsets.only(right: 12),
-                              child: ClipRRect(
-                                borderRadius: BorderRadius.circular(12),
-                                child: Image.asset(path, width: 160, fit: BoxFit.cover),
-                              ),
+                              child: GalleryImage(imagePath: path,),
                             ),
                         ],
                       ),
                     ),
                     const SizedBox(height: 30),
-
-                    Center(
-                      child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          padding: const EdgeInsets.symmetric(horizontal: 48, vertical: 16),
-                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                    Container(
+                      margin: EdgeInsets.only(left: 25, right: 25),
+                      child: Center(
+                        child: ActionButton(
+                          title: 'Réserver',
+                          onPressed: () { },
+                          backgroundColor: Colors.green,
                         ),
-                        onPressed: () {},
-                        child: const Text('Réserver maintenant'),
                       ),
                     ),
                     const SizedBox(height: 30),

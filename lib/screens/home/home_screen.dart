@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import '../../components/bookmarckButton.dart';
+import '../../components/favorite_box.dart';
+import '../../components/locationIcon.dart';
 import '../../components/notification_box.dart';
 import '../../components/recommend_item.dart';
 import '../../components/searchBar.dart';
@@ -28,20 +31,22 @@ class _MyHomePageState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: CustomScrollView(
-        slivers: [
-
-          SliverAppBar(
-            backgroundColor: AppColor.appBarColor,
-            pinned: true,
-            snap: true,
-            floating: true,
-            title: _builAppBar(),
-          ),
-          SliverToBoxAdapter(
-            child: _buildBody(),
-          ),
-        ],
+      body: RefreshIndicator(
+        onRefresh: _onRefresh,
+        child: CustomScrollView(
+          slivers: [
+            SliverAppBar(
+              backgroundColor: AppColor.appBarColor,
+              pinned: true,
+              snap: true,
+              floating: true,
+              title: _builAppBar(),
+            ),
+            SliverToBoxAdapter(
+              child: _buildBody(),
+            ),
+          ],
+        ),
       ),
 
     );
@@ -110,6 +115,7 @@ class _MyHomePageState extends State<HomeScreen> {
               isScrollable: true,
               labelColor: Colors.white,
               unselectedLabelColor: Colors.blue,
+              indicatorColor: Colors.transparent,
               indicator: BoxDecoration(
                 borderRadius: BorderRadius.circular(30),
                 color: AppThemes.backgroundColorDark,
@@ -118,7 +124,7 @@ class _MyHomePageState extends State<HomeScreen> {
               tabs: [
                 // Tab All
                 Container(
-                  height: 35,  // Hauteur réduite pour rendre la Tab plus petite
+                  height: 35,
                   padding: const EdgeInsets.symmetric(horizontal: 15),
                   decoration: BoxDecoration(
                     border: Border.all(color: Colors.grey, width: 1),
@@ -266,25 +272,37 @@ class _MyHomePageState extends State<HomeScreen> {
     );
   }
 
+  Future<void> _onRefresh() async {
+    // Ici tu mets ce que tu veux faire quand on rafraîchit
+    await Future.delayed(const Duration(seconds: 2)); // Simulation d'attente
+    setState(() {
+      // Tu peux recharger tes données ici
+    });
+  }
+
+
   Widget _buildAll() {
-    return ListView(
-      shrinkWrap: true,
-      physics: const BouncingScrollPhysics(),
-      padding: const EdgeInsets.all(5),
-      children: [
-        // Recommended
-        _getRecommend(),
-        const SizedBox(height: 20),
-        // Featured Stays
-        _buildFeaturedStays(),
-        const SizedBox(height: 20),
-        // Popular Destinations
-        _buildPopularDestinations(),
-        const SizedBox(height: 20),
-        // Special Offers
-        _buildSpecialOffers(),
-        const SizedBox(height: 120),
-      ],
+    return RefreshIndicator(
+      onRefresh: _onRefresh, // 👈 même fonction que dans _buildBody()
+      child: ListView(
+        shrinkWrap: true,
+        physics: const AlwaysScrollableScrollPhysics(), // 👈 pour permettre de tirer même si peu d'éléments
+        padding: const EdgeInsets.all(5),
+        children: [
+          // Recommended
+          _getRecommend(),
+          const SizedBox(height: 20),
+          // Featured Stays
+          _buildFeaturedStays(),
+          const SizedBox(height: 20),
+          // Popular Destinations
+          _buildPopularDestinations(),
+          const SizedBox(height: 20),
+          // Special Offers
+          _buildSpecialOffers(),
+          const SizedBox(height: 120),
+        ],
+      ),
     );
   }
 
@@ -345,7 +363,7 @@ class _MyHomePageState extends State<HomeScreen> {
                         const Positioned(
                           top: 8,
                           right: 8,
-                          child: Icon(Icons.favorite_border, color: Colors.white),
+                          child: FavoriteBox(),
                         ),
                       ],
                     ),
@@ -364,7 +382,9 @@ class _MyHomePageState extends State<HomeScreen> {
                           const SizedBox(height: 4),
                           Row(
                             children: [
-                              Icon(Icons.location_on, size: 13, color: Colors.grey[600]),
+                              const LocationSvgIcon(
+                                color: Colors.white,
+                              ),
                               const SizedBox(width: 4),
                               Expanded(
                                 child: Text(
@@ -446,16 +466,10 @@ class _MyHomePageState extends State<HomeScreen> {
                         fit: BoxFit.cover,
                       ),
                     ),
-                    Positioned(
+                    const Positioned(
                       top: 8,
                       right: 8,
-                      child: IconButton(
-                        icon: const Icon(Icons.favorite_border),
-                        color: Colors.white,
-                        onPressed: () {
-                          // action favori
-                        },
-                      ),
+                      child: FavoriteBox(),
                     ),
                     Positioned(
                       bottom: 0,
@@ -484,7 +498,9 @@ class _MyHomePageState extends State<HomeScreen> {
                             SizedBox(height: 4),
                             Row(
                               children: [
-                                Icon(Icons.location_on, size: 13, color: Colors.white70),
+                                LocationSvgIcon(
+                                  color: Colors.white,
+                                ),
                                 SizedBox(width: 4),
                                 Expanded(
                                   child: Text(
@@ -576,16 +592,10 @@ class _MyHomePageState extends State<HomeScreen> {
                         fit: BoxFit.cover,
                       ),
                     ),
-                    Positioned(
+                    const Positioned(
                       top: 8,
                       right: 8,
-                      child: IconButton(
-                        icon: const Icon(Icons.favorite_border),
-                        color: Colors.white,
-                        onPressed: () {
-                          // action favori
-                        },
-                      ),
+                      child: FavoriteBox(),
                     ),
                     Positioned(
                       bottom: 0,
@@ -614,7 +624,9 @@ class _MyHomePageState extends State<HomeScreen> {
                             SizedBox(height: 4),
                             Row(
                               children: [
-                                Icon(Icons.location_on, size: 13, color: Colors.white70),
+                                LocationSvgIcon(
+                                  color: Colors.white,
+                                ),
                                 SizedBox(width: 4),
                                 Expanded(
                                   child: Text(
@@ -707,16 +719,10 @@ class _MyHomePageState extends State<HomeScreen> {
                         fit: BoxFit.cover,
                       ),
                     ),
-                    Positioned(
+                    const Positioned(
                       top: 8,
                       right: 8,
-                      child: IconButton(
-                        icon: const Icon(Icons.favorite_border),
-                        color: Colors.white,
-                        onPressed: () {
-                          // action favori
-                        },
-                      ),
+                      child: FavoriteBox(),
                     ),
                     Positioned(
                       bottom: 0,
@@ -745,7 +751,9 @@ class _MyHomePageState extends State<HomeScreen> {
                             SizedBox(height: 4),
                             Row(
                               children: [
-                                Icon(Icons.location_on, size: 15, color: Colors.white70),
+                                LocationSvgIcon(
+                                  color: Colors.white,
+                                ),
                                 SizedBox(width: 4),
                                 Expanded(
                                   child: Text(
@@ -832,16 +840,10 @@ class _MyHomePageState extends State<HomeScreen> {
                   fit: BoxFit.cover,
                 ),
               ),
-              Positioned(
+              const Positioned(
                 top: 8,
                 right: 8,
-                child: IconButton(
-                  icon: const Icon(Icons.favorite_border),
-                  color: Colors.white,
-                  onPressed: () {
-                    // action favori
-                  },
-                ),
+                child: FavoriteBox(),
               ),
               Positioned(
                 bottom: 0,
@@ -870,7 +872,9 @@ class _MyHomePageState extends State<HomeScreen> {
                       SizedBox(height: 4),
                       Row(
                         children: [
-                          Icon(Icons.location_on, size: 13, color: Colors.white70),
+                          LocationSvgIcon(
+                            color: Colors.white,
+                          ),
                           SizedBox(width: 4),
                           Expanded(
                             child: Text(
@@ -999,21 +1003,27 @@ class _MyHomePageState extends State<HomeScreen> {
                           ),
                         ),
                       ),
+                      const Positioned(
+                        right: 1,
+                        top: 10,
+                        child: Row(
+                          children: [
+                            BookmarkButton(isBookmarked: false, color: Colors.white,)
+                          ],
+                        ),
+                      ),
                       Positioned(
-                        right: 10,
+                        left: 1,
                         top: 10,
                         child: Row(
                           children: [
                             IconButton(
-                              icon: const Icon(Icons.favorite_border, color: Colors.white),
+                              icon: const FavoriteBox(
+                                showBox: false,
+                                size: 22,
+                              ),
                               onPressed: () {
                                 // Logique pour ajouter aux favoris
-                              },
-                            ),
-                            IconButton(
-                              icon: const Icon(Icons.bookmark, color: Colors.white),
-                              onPressed: () {
-                                // Logique pour réserver
                               },
                             ),
                           ],
@@ -1087,15 +1097,10 @@ class _MyHomePageState extends State<HomeScreen> {
                           ),
                         ),
                       ),
-                      Positioned(
+                      const Positioned(
                         right: 10,
                         top: 10,
-                        child: IconButton(
-                          icon: const Icon(Icons.favorite_border, color: Colors.white),
-                          onPressed: () {
-                            // Logique pour ajouter aux favoris
-                          },
-                        ),
+                        child: FavoriteBox(showBox: false, size: 22,),
                       ),
                     ],
                   ),
@@ -1152,15 +1157,10 @@ class _MyHomePageState extends State<HomeScreen> {
                   ),
                 ),
               ),
-              Positioned(
+              const Positioned(
                 right: 10,
                 top: 10,
-                child: IconButton(
-                  icon: const Icon(Icons.favorite_border, color: Colors.white),
-                  onPressed: () {
-                    // Logique pour ajouter aux favoris
-                  },
-                ),
+                child: FavoriteBox(showBox: false, size: 22,),
               ),
             ],
           ),

@@ -35,12 +35,37 @@ class AppThemes {
 
 
     // AppBar du mode clair
-    appBarTheme: const AppBarTheme(color: secondaryColor, iconTheme: IconThemeData(color: primaryColor), titleTextStyle: TextStyle(color: primaryColor, fontSize: 28, fontWeight: FontWeight.bold, fontFamily: 'Roboto',),),
+    appBarTheme: const AppBarTheme(
+      color: secondaryColor,
+      iconTheme: IconThemeData(
+          color: primaryColor
+      ),
+      titleTextStyle: TextStyle(
+        color: primaryColor,
+        fontSize: 28,
+        fontWeight: FontWeight.bold,
+        fontFamily: 'Roboto',
+      ),
+    ),
 
 
 
     // Text theme du mode clair
-    textTheme: TextTheme(bodyLarge: primaryFontStyle.copyWith(color: primaryColor, fontSize: 16), bodyMedium: primaryFontStyle.copyWith(color: primaryColor, fontSize: 14), titleLarge: primaryFontStyle.copyWith(color: primaryColor, fontWeight: FontWeight.bold, fontSize: 24),),
+    textTheme: TextTheme(
+      bodyLarge: primaryFontStyle.copyWith(
+          color: primaryColor,
+          fontSize: 16
+      ),
+      bodyMedium: primaryFontStyle.copyWith(
+          color: primaryColor,
+          fontSize: 14
+      ),
+      titleLarge: primaryFontStyle.copyWith(
+          color: primaryColor,
+          fontWeight: FontWeight.bold,
+          fontSize: 24
+      ),
+    ),
 
 
 
@@ -51,10 +76,18 @@ class AppThemes {
 
 
     // Floating Action Button thème clair
-    floatingActionButtonTheme: const FloatingActionButtonThemeData(backgroundColor: secondaryColor, foregroundColor: primaryColor,),
+    floatingActionButtonTheme: const FloatingActionButtonThemeData(
+      backgroundColor: secondaryColor,
+      foregroundColor: primaryColor,
+    ),
 
     // Color Scheme
-    colorScheme: ColorScheme.fromSwatch().copyWith(secondary: secondaryColor, background: backgroundColorLight, onBackground: primaryColor,),);
+    colorScheme: ColorScheme.fromSwatch().copyWith(
+      secondary: secondaryColor,
+      background: backgroundColorLight,
+      onBackground: primaryColor,
+    ),
+  );
 
 
 
