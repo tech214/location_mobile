@@ -34,7 +34,7 @@ class MyApp extends StatelessWidget {
       themeMode: ThemeMode.system,
       // home:  HomePage(),
       // home:  const OnboardingScreen(),
-      home: const RootApp(),
+      home: const OnboardingScreen(),
     );
   }
 }

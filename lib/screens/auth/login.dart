@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:location_mobile/screens/auth/singIn.dart';
 import 'package:location_mobile/screens/home/home_screen.dart';
 import '../../components/bezier.dart';
+import '../../components/root.dart';
 import '../../themes/app_theme.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -42,7 +43,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
   Widget _submitButton() {
     return GestureDetector(
-      onTap: () => Get.off(() => const HomeScreen()),
+      onTap: () => Get.off(() => const RootApp()),
       child: Container(
         width: MediaQuery.of(context).size.width,
         padding: const EdgeInsets.symmetric(vertical: 15),

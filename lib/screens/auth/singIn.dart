@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:location_mobile/screens/auth/login.dart';
 import '../../components/bezier.dart';
+import '../../components/root.dart';
 import '../../components/theme/color.dart';
 import '../../themes/app_theme.dart';
 import '../home/home_screen.dart';
@@ -67,7 +68,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
   Widget _submitButton() {
     return GestureDetector(
-      onTap: () => Get.offAll(() => const HomeScreen()),
+      onTap: () => Get.offAll(() => const RootApp()),
       child: Container(
         width: MediaQuery.of(context).size.width,
         padding: const EdgeInsets.symmetric(vertical: 15),
