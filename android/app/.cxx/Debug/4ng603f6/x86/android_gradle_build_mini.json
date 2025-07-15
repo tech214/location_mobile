@@ -1,0 +1,20 @@
+{
+  "buildFiles": [
+    "/Users/cauridor/development/flutter/packages/flutter_tools/gradle/src/main/groovy/CMakeLists.txt"
+  ],
+  "cleanCommandsComponents": [
+    [
+      "/Users/cauridor/Library/Android/sdk/cmake/3.22.1/bin/ninja",
+      "-C",
+      "/Users/cauridor/Documents/dev/my_projects/flutter/ourProjects/location_mobile/android/app/.cxx/Debug/4ng603f6/x86",
+      "clean"
+    ]
+  ],
+  "buildTargetsCommandComponents": [
+    "/Users/cauridor/Library/Android/sdk/cmake/3.22.1/bin/ninja",
+    "-C",
+    "/Users/cauridor/Documents/dev/my_projects/flutter/ourProjects/location_mobile/android/app/.cxx/Debug/4ng603f6/x86",
+    "{LIST_OF_TARGETS_TO_BUILD}"
+  ],
+  "libraries": {}
+}
